@@ -1,0 +1,11 @@
+# Ignore bin and obj folders inside the AppAPI directory
+AppAPI/bin/
+AppAPI/obj/
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*

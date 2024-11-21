@@ -1,0 +1,48 @@
+-- Users Table for Authentication and Basic Info
+CREATE TABLE Users (
+    UserId INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL UNIQUE, -- Ensure username is unique
+    Email NVARCHAR(100) NOT NULL UNIQUE, -- Ensure email is unique
+    PasswordHash NVARCHAR(255) NOT NULL, -- For storing hashed passwords
+);
+
+-- Roles Table to store different roles like Admin, User, etc.
+CREATE TABLE Roles (
+    RoleId INT PRIMARY KEY IDENTITY(1,1),
+    RoleName NVARCHAR(50) NOT NULL UNIQUE -- Ensure role name is unique
+);
+
+-- UserRoles Table to associate users with multiple roles
+CREATE TABLE UserRoles (
+    UserRoleId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT NOT NULL,
+    RoleId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE,
+    FOREIGN KEY (RoleId) REFERENCES Roles(RoleId) ON DELETE CASCADE
+);
+
+-- Products Table to store product information
+CREATE TABLE Products (
+    ProductId INT PRIMARY KEY IDENTITY(1,1),
+    ProductName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(500) NULL, -- Optional product description
+    ImageUrl NVARCHAR(255) NOT NULL, -- URL for the product image
+    Price DECIMAL(18, 2) NOT NULL, -- Product price with two decimal places
+    StockQuantity INT NOT NULL DEFAULT 0, -- Number of items in stock
+    SellerId INT NOT NULL, -- Reference to the seller of the product
+    CreatedAt DATETIME DEFAULT GETDATE(), -- Timestamp for when the product was created
+    UpdatedAt DATETIME NULL, -- Timestamp for when the product was last updated
+    FOREIGN KEY (SellerId) REFERENCES Users(UserId) ON DELETE CASCADE, -- Link to Sellers table
+);
+
+-- TransactionHistory Table to track transactions for products
+CREATE TABLE TransactionHistory (
+    TransactionId INT PRIMARY KEY IDENTITY(1,1),
+    ProductId INT NOT NULL, -- Reference to the purchased product
+    BuyerID INT NOT NULL, -- Reference to the seller who sold the product
+    Quantity INT NOT NULL, -- Number of products sold
+    TotalAmount DECIMAL(18, 2) NOT NULL, -- Total amount for the transaction
+    TransactionDate DATETIME DEFAULT GETDATE(), -- Timestamp for when the transaction happened
+    FOREIGN KEY (ProductId) REFERENCES Products(ProductId) ON DELETE CASCADE, -- Link to Products table
+    FOREIGN KEY (BuyerID) REFERENCES Users(UserId) ON DELETE CASCADE -- Link to Sellers table
+);

@@ -1,0 +1,89 @@
+<div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
+  <form class="max-w-sm w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
+    <!-- Title -->
+    <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Register</h2>
+
+    <!-- Email Input -->
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        placeholder=" "
+        required
+      />
+      <label
+        for="email"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Email
+      </label>
+    </div>
+
+    <!-- Password Input -->
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="password"
+        name="password"
+        id="password"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        placeholder=" "
+        required
+      />
+      <label
+        for="password"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Password
+      </label>
+    </div>
+
+    <!-- Confirm Password Input -->
+    <div class="relative z-0 w-full mb-5 group">
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        placeholder=" "
+        required
+      />
+      <label
+        for="confirm_password"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Confirm Password
+      </label>
+    </div>
+
+    <!-- Role Dropdown -->
+    <div class="relative z-0 w-full mb-6 group">
+      <select
+        name="role"
+        id="role"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        required
+      >
+        <option value="" disabled selected hidden>Choose your role</option>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <label
+        for="role"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Role
+      </label>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full py-2.5 text-sm font-medium text-[#222831] bg-[#71C9CE] hover:bg-[#00ADB5] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#00ADB5] text-center"
+    >
+      Register
+    </button>
+    <a href="http://localhost:4200/login">log</a>
+  </form>
+</div>
