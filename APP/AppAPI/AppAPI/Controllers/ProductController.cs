@@ -61,18 +61,49 @@ namespace AppAPI.Controllers
         }
 
 
-        // Read Sort
-        [HttpGet("Sorted")] //ok
+        // Read Sorted Products with Seller Info
+        [HttpGet("Sorted")]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
-            var ProductQuery = _context.Products.AsQueryable();
+            // Start with the Product query
+            var ProductQuery = _context.Products
+                .Include(p => p.Seller) // Eagerly load the Seller navigation property
+                .AsQueryable();
 
+            // Apply sorting and filtering using SieveProcessor
             ProductQuery = _sieveProcessor.Apply(model, ProductQuery);
 
-            var Product = await ProductQuery.ToListAsync();
+            // Execute the query to get the products
+            var products = await ProductQuery.ToListAsync();
 
-            return Ok(Product);
+            if (products == null || !products.Any())
+            {
+                return NotFound(new { message = "No Products found." });
+            }
+
+            // Transform data to include Seller details
+            var result = products.Select(p => new
+            {
+                p.ProductId,
+                p.ProductName,
+                p.Description,
+                p.ImageContent,
+                p.Price,
+                p.StockQuantity,
+                p.CreatedAt,
+                p.UpdatedAt,
+                Seller = new
+                {
+                    p.Seller.UserId,
+                    p.Seller.Username,
+                    p.Seller.Email
+                }
+            });
+
+            // Return the transformed result
+            return Ok(result);
         }
+
 
         // GET: api/Product/{id}
         [HttpGet("GetProductById")] //ok

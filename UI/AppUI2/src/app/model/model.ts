@@ -48,3 +48,10 @@ export class UserRole {
     userId: string = '';
     roleId: string = '';
   }
+
+  export class Filter {
+    Filters: string = '';
+    Sorts: string = '';
+    Page: number = 1;
+    PageSize: number = 10;
+  }

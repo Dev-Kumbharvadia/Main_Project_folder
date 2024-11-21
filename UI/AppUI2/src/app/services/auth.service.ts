@@ -1,25 +1,29 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../environment/environment.development';
+import { Constant } from '../constant/constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  onLogin(){
-
+  onLogin(): Observable<any>{
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD,{});
   }
 
-  onRegister(){
-
+  onRegister(): Observable<any>{
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD,{});
   }
 
-  onLogut(){
-
+  onLogut(): Observable<any>{
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD,{});
   }
 
-  refreshToken(){
-
+  refreshToken(): Observable<any>{
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD,{});
   }
 }

@@ -115,20 +115,6 @@ namespace TodoAPI.Controllers
 
 
         // DELETE: api/Role/{id}
-        [HttpDelete("RemoveRole")] //ok
-        public async Task<IActionResult> RemoveRole(Guid id)
-        {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
 
         [HttpPut("UpdateRole")] //ok
         public async Task<IActionResult> UpdateRole(Guid Id, RoleDTO role)

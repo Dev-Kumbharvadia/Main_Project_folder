@@ -44,3 +44,10 @@ export interface IRefreshToken {
   token: string; // Required
   expiresAt: Date; // Expiry date
 }
+
+export interface IFilter {
+  Filters: string;
+  Sorts: string;
+  Page: number;
+  PageSize: number;
+}
