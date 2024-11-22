@@ -65,3 +65,18 @@ export class CartItem {
   cartQuantity: number = 0;
   sellerName: string = '';
 }
+
+export class LoginModel {
+    username: string = '';
+    password: string ='';
+}
+
+export class RegisterModel {
+  username: string = '';
+  password: string ='';
+  email: string ='';
+}
+
+export class LogoutModel {
+  userId: string = '';
+}

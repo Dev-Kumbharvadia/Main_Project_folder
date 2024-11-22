@@ -61,3 +61,18 @@ export interface ICartItem {
   cartQuantity: number;
   sellerName: string;
 }
+
+export interface ILoginModel {
+  username: string;
+  password: string;
+}
+
+export interface IRegisterModel {
+  username: string;
+  password: string;
+  email: string;
+}
+
+export interface ILogoutModel {
+  userId: string;
+}

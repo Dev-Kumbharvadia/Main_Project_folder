@@ -9,6 +9,7 @@ using AppAPI.Models;
 using AppAPI.Models.Domain;
 using AppAPI.Models.DTO;
 using TodoAPI.Models;
+using AppAPI.Models.Interface;
 
 namespace TodoAPI.Controllers
 {

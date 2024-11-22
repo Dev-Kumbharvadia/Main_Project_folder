@@ -104,4 +104,14 @@ removeItem(Id: string) {
   sessionStorage.setItem('cart', JSON.stringify(cartData));
 }
 
+grandTotal(){
+  var grandTotal = 0.0;
+
+  this.cartItems.forEach(element => {
+    grandTotal += element.cartQuantity * element.price;
+  });
+
+  return grandTotal;
+}
+
 }

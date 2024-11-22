@@ -1,5 +1,5 @@
 <div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
-    <form class="max-w-md w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
+    <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()" class="max-w-md w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
       <!-- Title -->
       <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Add Product</h2>
   

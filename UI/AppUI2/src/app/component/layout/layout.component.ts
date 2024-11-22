@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CartComponent } from '../cart/cart.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,5 +12,15 @@ import { CartComponent } from '../cart/cart.component';
 })
 export class LayoutComponent {
   userRole:any;
+  authService = inject(AuthService);
+  router = inject(Router);
+
+  onLogout(){
+    var Id = sessionStorage.getItem('userId') ?? '';
+    this.authService.onLogut(Id).subscribe((res: any)=>{
+      this.router.navigateByUrl('');
+      
+    });
+  }
 
 }

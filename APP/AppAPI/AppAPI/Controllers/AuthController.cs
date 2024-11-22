@@ -9,6 +9,7 @@ using AppAPI.Data;
 using AppAPI.Models;
 using AppAPI.Models.Domain;
 using TodoAPI.Models;
+using AppAPI.Models.Interface;
 
 namespace TodoAPI.Controllers
 {
@@ -23,6 +24,51 @@ namespace TodoAPI.Controllers
         {
             _context = context;
             _config = config;
+        }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult<ApiResponse<User>>> Register([FromBody] UserRegisterModel model)
+        {
+            if (_context.Users.Any(u => u.Username == model.Username))
+            {
+                return BadRequest(new ApiResponse<User>
+                {
+                    Message = "Username already exists",
+                    Success = false,
+                });
+            }
+
+            if (_context.Users.Any(u => u.Email == model.Email))
+            {
+                return BadRequest(new ApiResponse<User>
+                {
+                    Message = "Email already exists",
+                    Success = false,
+                });
+            }
+
+            if (model == null || string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password) || string.IsNullOrEmpty(model.Email))
+            {
+                throw new ArgumentException("All fields are required.");
+            }
+
+            var user = new User
+            {
+                UserId = Guid.NewGuid(),
+                Username = model.Username,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                Email = model.Email
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Register), new { id = user.UserId }, new ApiResponse<User>
+            {
+                Message = "User registered successfully",
+                Success = true,
+                Data = user
+            });
         }
 
         // POST: api/audit/logout/{userId}
@@ -67,82 +113,6 @@ namespace TodoAPI.Controllers
                     Success = false,
                 });
             }
-        }
-
-        // POST: api/user/register
-        [HttpPost("Register")] //ok
-        public ActionResult<ApiResponse<User>> Register([FromBody] UserRegisterModel model)
-        {
-
-            // Check if the username already exists
-            if (_context.Users.Any(u => u.Username == model.Username))
-            {
-                return BadRequest(new ApiResponse<User>
-                {
-                    Message = "Username already exists",
-                    Success = false,
-                });
-            }
-
-            // Check if the email already exists
-            if (_context.Users.Any(u => u.Email == model.Email))
-            {
-                return BadRequest(new ApiResponse<User>
-                {
-                    Message = "Email already exists",
-                    Success = false,
-                });
-            }
-
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model), "The registration model cannot be null.");
-            }
-
-            if (string.IsNullOrEmpty(model.Username))
-            {
-                throw new ArgumentException("Username is required.", nameof(model.Username));
-            }
-
-            if (string.IsNullOrEmpty(model.Password))
-            {
-                throw new ArgumentException("Password is required.", nameof(model.Password));
-            }
-
-            if (string.IsNullOrEmpty(model.Email))
-            {
-                throw new ArgumentException("Email is required.", nameof(model.Email));
-            }
-
-            var user = new User
-            {
-                UserId = Guid.NewGuid(),
-                Username = model.Username,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
-                Email = model.Email
-            };
-
-            _context.Users.Add(user);
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new ApiResponse<User>
-                {
-                    Message = $"Error registering user: {ex.Message}",
-                    Success = false,
-                });
-            }
-
-            return CreatedAtAction(nameof(Register), new { id = user.UserId }, new ApiResponse<User>
-            {
-                Message = "User registered successfully",
-                Success = true,
-                Data = user
-            });
         }
 
         // POST: api/user/login
