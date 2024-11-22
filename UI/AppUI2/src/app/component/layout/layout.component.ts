@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { CartComponent } from '../cart/cart.component';
 
 @Component({
   selector: 'app-layout',
@@ -10,4 +11,5 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class LayoutComponent {
   userRole:any;
+
 }

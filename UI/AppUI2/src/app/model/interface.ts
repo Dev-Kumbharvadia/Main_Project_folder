@@ -51,3 +51,13 @@ export interface IFilter {
   Page: number;
   PageSize: number;
 }
+
+export interface ICartItem {
+  productId: string;
+  productName: string;
+  description?: string;
+  imageContent: Uint8Array
+  price: number;
+  cartQuantity: number;
+  sellerName: string;
+}
