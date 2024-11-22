@@ -1,105 +1,107 @@
 <div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
-    <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()" class="max-w-md w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
-      <!-- Title -->
-      <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Add Product</h2>
-  
-      <!-- Product Name -->
-      <div class="relative z-0 w-full my-7 group">
-        <input
-          type="text"
-          name="product_name"
-          id="product_name"
-          class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="product_name"
-          class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Product Name
-        </label>
-      </div>
-  
-      <!-- Description -->
-      <div class="relative z-0 w-full my-7 group">
-        <textarea
-          name="description"
-          id="description"
-          class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
-          placeholder=" "
-        ></textarea>
-        <label
-          for="description"
-          class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Description
-        </label>
-      </div>
-  
-      <!-- Product Image -->
-      <div class="relative z-0 w-full my-4 group">
-        <input
-          type="file"
-          name="image_content"
-          id="image_content"
-          accept="image/*"
-          class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="image_content"
-          class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Upload Product Image
-        </label>
-      </div>
-  
-      <!-- Price -->
-      <div class="relative z-0 w-full my-7 group">
-        <input
-          type="number"
-          step="0.01"
-          name="price"
-          id="price"
-          class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="price"
-          class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Price
-        </label>
-      </div>
-  
-      <!-- Stock Quantity -->
-      <div class="relative z-0 w-full my-7 group">
-        <input
-          type="number"
-          name="stock_quantity"
-          id="stock_quantity"
-          class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
-          placeholder=" "
-          required
-        />
-        <label
-          for="stock_quantity"
-          class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Stock Quantity
-        </label>
-      </div>
-  
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="w-full py-2.5 text-sm font-medium text-[#222831] bg-[#71C9CE] hover:bg-[#00ADB5] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#00ADB5] text-center"
+  <form (ngSubmit)="onSubmit()" class="max-w-md w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
+    <!-- Title -->
+    <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Add Product</h2>
+
+    <!-- Product Name -->
+    <div class="relative z-0 w-full my-7 group">
+      <input
+      type="text"
+      name="productName"
+      id="productName"
+      [(ngModel)]="product.productName"
+      class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+      placeholder=" "
+      required
+    />    
+      <label
+        for="productName"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
       >
-        Add Product
-      </button>
-    </form>
-  </div>
-  
+        Product Name
+      </label>
+    </div>
+
+    <!-- Description -->
+    <div class="relative z-0 w-full my-7 group">
+      <textarea
+        name="description"
+        id="description"
+        [(ngModel)]="product.description"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        placeholder=" "
+      ></textarea>
+      <label
+        for="description"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Description
+      </label>
+    </div>
+
+    <!-- Product Image -->
+    <div class="relative z-0 w-full my-4 group">
+      <input
+        type="file"
+        name="image"
+        id="image"
+        (change)="onFileChange($event)"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        required
+      />
+      <label
+        for="image"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Upload Product Image
+      </label>
+    </div>
+
+    <!-- Price -->
+    <div class="relative z-0 w-full my-7 group">
+      <input
+        type="number"
+        step="0.01"
+        name="price"
+        id="price"
+        [(ngModel)]="product.price"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        placeholder=" "
+        required
+      />
+      <label
+        for="price"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Price
+      </label>
+    </div>
+
+    <!-- Stock Quantity -->
+    <div class="relative z-0 w-full my-7 group">
+      <input
+        type="number"
+        name="stockQuantity"
+        id="stockQuantity"
+        [(ngModel)]="product.stockQuantity"
+        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        placeholder=" "
+        required
+      />
+      <label
+        for="stockQuantity"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Stock Quantity
+      </label>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full py-2.5 text-sm font-medium text-[#222831] bg-[#71C9CE] hover:bg-[#00ADB5] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#00ADB5] text-center"
+    >
+      Add Product
+    </button>
+  </form>
+</div>

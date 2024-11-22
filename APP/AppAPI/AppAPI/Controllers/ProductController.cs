@@ -119,10 +119,10 @@ namespace AppAPI.Controllers
             return Ok(product);
         }
 
-        // POST: api/Product/upload
-        [HttpPost("AddProduct")] //ok
+        [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct([FromForm] ProductUploadDTO productDto)
         {
+            // Validate if the image file is provided
             if (productDto.ImageFile == null || productDto.ImageFile.Length == 0)
                 return BadRequest("No file uploaded.");
 

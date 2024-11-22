@@ -24,7 +24,7 @@ namespace TodoAPI.Controllers
             _context = context;
         }
 
-        [HttpPost("AssignRole")] //ok
+        [HttpPost("AssignRoles")] //ok
         public async Task<ActionResult> UpdateUserRoles(Guid userId, List<Guid> roleIds)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -51,6 +51,37 @@ namespace TodoAPI.Controllers
                     _context.UserRoles.Add(new UserRole { RoleId = roleId, UserId = userId });
                 }
             }
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "User roles updated successfully." });
+        }
+
+        [HttpPost("AssignRole")] //ok
+        public async Task<ActionResult> AddUserRole(Guid userId, Guid roleId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"User with ID {userId} does not exist.");
+            }
+
+            // Retrieve the user's existing roles
+            var existingUserRoles = _context.UserRoles.Where(ur => ur.UserId == userId).ToList();
+
+                var role = await _context.Roles.FindAsync(roleId);
+                if (role == null)
+                {
+                    return BadRequest($"Role with ID {roleId} does not exist.");
+                }
+
+                var userRoleExist = existingUserRoles.SingleOrDefault(ur => ur.RoleId == roleId);
+                if (userRoleExist == null)
+                {
+                    _context.UserRoles.Add(new UserRole { RoleId = roleId, UserId = userId });
+                }
+            
 
             // Save changes to the database
             await _context.SaveChangesAsync();

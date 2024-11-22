@@ -1,0 +1,94 @@
+<div class="min-h-screen bg-gray-100 p-6">
+    <!-- Search and Filter Form -->
+    <form class="max-w-lg mx-auto mb-6">
+      <div class="flex">
+        <button
+          id="dropdown-button"
+          data-dropdown-toggle="dropdown"
+          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+          type="button"
+        >
+          All Categories
+          <svg
+            class="w-2.5 h-2.5 ms-2.5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+        <input
+          type="search"
+          id="search-dropdown"
+          class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border rounded-e-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+          placeholder="Search products..."
+          required
+        />
+      </div>
+    </form>
+  
+    <!-- Product List -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Image</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Description</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Price</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Stock</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          @for (product of products; track $index)
+          {
+            <tr
+            class="hover:bg-gray-50"
+          >
+            <td class="px-6 py-4">
+              <img
+                class="h-12 w-12 object-cover rounded"
+                [src]="'data:image/jpeg;base64,' + product.imageContent"
+                alt="Product Image"
+              />
+            </td>
+            <td class="px-6 py-4 text-gray-800">{{ product.productName }}</td>
+            <td class="px-6 py-4 text-gray-500 truncate w-48">
+              {{ product.description }}
+            </td>
+            <td class="px-6 py-4 text-green-600 font-bold">
+              ${{ product.price }}
+            </td>
+            <td class="px-6 py-4 text-gray-500">{{ product.stockQuantity }}</td>
+            <td class="px-6 py-4 flex space-x-2">
+              <!-- Edit Button -->
+              <button
+                class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                (click)="editProduct(product.productId)"
+              >
+                Edit
+              </button>
+              <!-- Delete Button -->
+              <button
+                class="text-red-600 hover:text-red-800 text-sm font-medium"
+                (click)="deleteProduct(product.productId)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

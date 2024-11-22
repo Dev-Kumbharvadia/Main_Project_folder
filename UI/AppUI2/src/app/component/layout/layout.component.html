@@ -54,6 +54,18 @@
             <button (click)="onLogout()" class="text-[#dd3d53]">Logout</button>
           </li>
         }
+        @if (!userRole)
+        {
+          <li>
+            <a routerLink="product-list" routerLinkActive="active" class="block py-2 px-3 md:p-0 text-[#EEEEEE] rounded hover:bg-[#393E46] md:hover:bg-transparent md:hover:text-[#00ADB5]">Product List</a>
+          </li>
+        }
+        @if (!userRole)
+        {
+          <li>
+            <a routerLink="update-product" routerLinkActive="active" class="block py-2 px-3 md:p-0 text-[#EEEEEE] rounded hover:bg-[#393E46] md:hover:bg-transparent md:hover:text-[#00ADB5]">Update Product</a>
+          </li>
+        }
         <!-- <li>
           <a href="#" class="block py-2 px-3 md:p-0 text-[#EEEEEE] rounded hover:bg-[#393E46] md:hover:bg-transparent md:hover:text-[#00ADB5]">Add-Product</a>
         </li>

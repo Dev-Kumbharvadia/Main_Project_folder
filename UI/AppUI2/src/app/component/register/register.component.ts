@@ -3,17 +3,18 @@ import { IRegisterModel } from '../../model/interface';
 import { RegisterModel, Role } from '../../model/model';
 import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
-  registerModel: IRegisterModel = new RegisterModel();
-  authService = inject(AuthService)
+  authService = inject(AuthService);
+  adminService = inject(AdminService);
   roles: Role[] = [];
 
   registerForm = new FormGroup({
@@ -28,15 +29,30 @@ export class RegisterComponent implements OnInit {
     this.loadRoles();
   }
 
-  onRegister()
-  {
-    this.authService.onRegister(this.registerModel).subscribe((res:any)=>{
-      console.log(res);
-    });
+  onRegister(): void {
+    if (this.registerForm.invalid) {
+      console.log('Form is invalid');
+      return;
+    }
+    var userId: string;
+    this.authService
+      .onRegister(
+        this.registerForm.get('username')?.value,
+        this.registerForm.get('password')?.value,
+        this.registerForm.get('email')?.value
+      )
+      .subscribe((res: any) => {
+        userId = res.data?.userId;
+        this.adminService
+          .assignRole(userId, this.registerForm.get('roleId')?.value)
+          .subscribe((roleRes: any) => {
+            console.log('Role assigned:', roleRes);
+          });
+      });
   }
 
-  loadRoles(){
-    this.authService.getRoles().subscribe((res:any)=>{
+  loadRoles() {
+    this.authService.getRoles().subscribe((res: any) => {
       this.roles = res;
     });
   }

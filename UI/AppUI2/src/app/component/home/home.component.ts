@@ -35,7 +35,6 @@ export class HomeComponent implements OnInit {
 
   getSortedProducts(){
     this.productService.getSortedProducts(this.filter).subscribe((res: any)=>{
-      console.log(res);
       this.products = res;
     })
   }

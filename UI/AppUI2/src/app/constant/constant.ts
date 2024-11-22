@@ -35,7 +35,7 @@ export const Constant = {
         },
         USER: {
             ASSIGN_ROLE: '/api/User/AssignRole',
-            REWRITE_ROLE: '/api/User/AssignRole',
+            ASSIGN_ROLES: '/api/User/AssignRoles',
             ADD: '/api/User/AssignRole',
             GET_ALL: '/api/User/GetAllUsers',
             GET_BY_ID: '/api/User/GetUserByID',

@@ -19,7 +19,6 @@ export class LayoutComponent {
     var Id = sessionStorage.getItem('userId') ?? '';
     this.authService.onLogut(Id).subscribe((res: any)=>{
       this.router.navigateByUrl('');
-      
     });
   }
 

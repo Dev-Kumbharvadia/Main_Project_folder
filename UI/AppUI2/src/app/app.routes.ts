@@ -8,6 +8,8 @@ import { CartComponent } from './component/cart/cart.component';
 import { ManageUserComponent } from './component/manage-user/manage-user.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { AddProductComponent } from './component/add-product/add-product.component';
+import { ProductListComponent } from './component/product-list/product-list.component';
+import { UpdateProductComponent } from './component/update-product/update-product.component';
 
 export const routes: Routes = [
   {
@@ -61,6 +63,14 @@ export const routes: Routes = [
       {
         path: 'add-product',
         component: AddProductComponent
+      },
+      {
+        path: 'product-list',
+        component: ProductListComponent
+      },
+      {
+        path: 'update-product',
+        component: UpdateProductComponent
       }
     ]
   },

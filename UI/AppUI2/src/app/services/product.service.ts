@@ -16,6 +16,7 @@ export class ProductService {
   }
 
   productsList: Product[] = [];
+  updateProdId: string = '';
 
   getAllProducts(): Observable<any>{
     return this.http.get<any>(environment.API_URl + Constant.API_METHOD.PRODUCT.GET_ALL);
@@ -50,12 +51,12 @@ export class ProductService {
     return this.http.get<any>(environment.API_URl + Constant.API_METHOD.PRODUCT.GET_BY_ID + `?id=${Id}`);
   }
 
-  addProduct(product: any): Observable<any>{
-    return this.http.post<any>(environment.API_URl + Constant.API_METHOD.PRODUCT,{});
+  addProduct(formData: FormData): Observable<any>{
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD.PRODUCT.ADD,formData);
   }
 
-  updateProduct(product: any): Observable<any>{
-    return this.http.put<any>(environment.API_URl + Constant.API_METHOD.PRODUCT,{});
+  updateProduct(productId: string, formData: FormData): Observable<any>{
+    return this.http.put<any>(environment.API_URl + Constant.API_METHOD.PRODUCT.UPDATE+'?id='+`${productId}`,formData);
   }
 
   deleteProduct(Id: string): Observable<any>{
