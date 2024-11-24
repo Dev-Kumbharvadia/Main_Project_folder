@@ -180,10 +180,8 @@ namespace AppAPI.Controllers
                 product.Description = productDto.Description;
             }
 
-            // Always update the UpdatedAt field
             product.UpdatedAt = DateTime.UtcNow;
 
-            // Handle file upload if provided
             if (productDto.File != null && productDto.File.Length > 0)
             {
                 try

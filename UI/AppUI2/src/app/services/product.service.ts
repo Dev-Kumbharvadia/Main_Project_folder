@@ -60,7 +60,7 @@ export class ProductService {
   }
 
   deleteProduct(Id: string): Observable<any>{
-    return this.http.delete<any>(environment.API_URl + Constant.API_METHOD.PRODUCT,{});
+    return this.http.delete<any>(environment.API_URl + Constant.API_METHOD.PRODUCT.DELETE + "?id=" + `${Id}`,{});
   }
 
 }

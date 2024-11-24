@@ -13,9 +13,5 @@ namespace AppAPI.Models.DTO
         [Required]
         public int Quantity { get; set; }
 
-        [Required]
-        public double TotalAmount { get; set; }
-        public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
-
     }
 }

@@ -76,3 +76,11 @@ export interface IRegisterModel {
 export interface ILogoutModel {
   userId: string;
 }
+
+export interface IUserInfo {
+  userId: string; // Guid will be converted to string in TypeScript
+  username: string;
+  email: string;
+  lastLoginTime: string | null; // ISO date string or null
+  lastLogoutTime: string | null; // ISO date string or null
+}

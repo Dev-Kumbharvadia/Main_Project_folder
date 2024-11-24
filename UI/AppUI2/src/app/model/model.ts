@@ -40,7 +40,8 @@ export class User {
 export class UserAudit {
   userAuditId: string = '';
   userId: string = '';
-  loginTime: Date = new Date();
+  username: string = '';
+  loginTime?: Date;
   logoutTime?: Date;
 }
 
@@ -89,4 +90,19 @@ export class RegisterModel {
 
 export class LogoutModel {
   userId: string = '';
+}
+
+export class UserInfo {
+  userId: string = '';
+  username: string = '';
+  email: string = '';
+  lastLoginTime: string | null = '';
+  lastLogoutTime: string | null = '';
+}
+
+export class UserTransaction {
+  productName: string = '';
+  quantity: number = 0;
+  transactionDate: string = '';
+  totalAmount: number = 0;
 }

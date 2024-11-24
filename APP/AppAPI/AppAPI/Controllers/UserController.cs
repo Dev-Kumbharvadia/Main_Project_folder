@@ -170,6 +170,62 @@ namespace TodoAPI.Controllers
             return Ok(users);
         }
 
+        [HttpGet("GetAllUserInfo")]
+        public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetAllUsersInfo()
+        {
+            var users = await _context.Users
+                .Select(user => new UserInfoDto
+                {
+                    UserId = user.UserId,
+                    Username = user.Username,
+                    Email = user.Email,
+                    LastLoginTime = user.UserAudits
+                        .OrderByDescending(audit => audit.LoginTime)
+                        .Select(audit => audit.LoginTime)
+                        .FirstOrDefault(),
+                    LastLogoutTime = user.UserAudits
+                        .OrderByDescending(audit => audit.LoginTime)
+                        .Select(audit => audit.LogoutTime)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            return Ok(users);
+        }
+
+        [HttpGet("GetUserInfoById")]
+        public async Task<ActionResult<UserInfoDto>> GetUserInfoById(Guid id)
+        {
+            // Retrieve user information for the given Id
+            var user = await _context.Users
+                .Where(u => u.UserId == id) // Filter by the provided user Id
+                .Select(user => new UserInfoDto
+                {
+                    UserId = user.UserId,
+                    Username = user.Username,
+                    Email = user.Email,
+                    LastLoginTime = user.UserAudits
+                        .OrderByDescending(audit => audit.LoginTime)
+                        .Select(audit => audit.LoginTime)
+                        .FirstOrDefault(),
+                    LastLogoutTime = user.UserAudits
+                        .OrderByDescending(audit => audit.LoginTime)
+                        .Select(audit => audit.LogoutTime)
+                        .FirstOrDefault()
+                })
+                .FirstOrDefaultAsync(); // Return a single user or null if not found
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user);
+        }
+
+
+
+
         [HttpGet("GetUserByID")] //ok
         public async Task<ActionResult<IEnumerable<User>>> GetUserByID(Guid Id)
         {

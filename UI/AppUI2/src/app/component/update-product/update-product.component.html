@@ -1,8 +1,8 @@
 <div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
-    <form (ngSubmit)="onSubmit()" class="max-w-md w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
+    <form (ngSubmit)="onUpdate()" class="max-w-md w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg">
       <!-- Title -->
       <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Update Product</h2>
-  
+
       <!-- Product Name -->
       <div class="relative z-0 w-full my-7 group">
         <input
@@ -21,7 +21,7 @@
           Product Name
         </label>
       </div>
-  
+
       <!-- Description -->
       <div class="relative z-0 w-full my-7 group">
         <textarea
@@ -38,7 +38,7 @@
           Description
         </label>
       </div>
-  
+
       <!-- Product Image -->
       <div class="relative z-0 w-full my-4 group">
         <input
@@ -56,7 +56,7 @@
         </label>
         <img [src]="'data:image/jpeg;base64,' + imageData" alt="" style="max-height: 200px;">
       </div>
-  
+
       <!-- Price -->
       <div class="relative z-0 w-full my-7 group">
         <input
@@ -76,7 +76,7 @@
           Price
         </label>
       </div>
-  
+
       <!-- Stock Quantity -->
       <div class="relative z-0 w-full my-7 group">
         <input
@@ -95,7 +95,7 @@
           Stock Quantity
         </label>
       </div>
-  
+
       <!-- Submit Button -->
       <button
         type="submit"
@@ -105,4 +105,3 @@
       </button>
     </form>
   </div>
-  
