@@ -73,7 +73,7 @@ namespace AppAPI.Migrations
                     b.Property<DateTime>("Expires")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Revoked")
+                    b.Property<DateTime?>("Revoked")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
@@ -83,9 +83,14 @@ namespace AppAPI.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserSecurityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserSecurityId");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -198,6 +203,26 @@ namespace AppAPI.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("AppAPI.Models.Domain.UserSecurity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TokenVersion")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserSecurities");
+                });
+
             modelBuilder.Entity("AppAPI.Models.Domain.Product", b =>
                 {
                     b.HasOne("AppAPI.Models.Domain.User", "Seller")
@@ -216,6 +241,10 @@ namespace AppAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AppAPI.Models.Domain.UserSecurity", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserSecurityId");
 
                     b.Navigation("User");
                 });
@@ -265,6 +294,17 @@ namespace AppAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AppAPI.Models.Domain.UserSecurity", b =>
+                {
+                    b.HasOne("AppAPI.Models.Domain.User", "User")
+                        .WithOne("UserSecurity")
+                        .HasForeignKey("AppAPI.Models.Domain.UserSecurity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AppAPI.Models.Domain.Role", b =>
                 {
                     b.Navigation("UserRoles");
@@ -281,6 +321,14 @@ namespace AppAPI.Migrations
                     b.Navigation("UserAudits");
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("UserSecurity")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppAPI.Models.Domain.UserSecurity", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

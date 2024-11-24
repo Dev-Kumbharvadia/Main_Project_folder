@@ -22,7 +22,7 @@ namespace AppAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Define relationships
+            // Define relationships for other entities
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Products)
                 .WithOne(p => p.Seller)

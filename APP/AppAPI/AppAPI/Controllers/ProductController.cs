@@ -1,6 +1,7 @@
 ﻿using AppAPI.Data;
 using AppAPI.Models.Domain;
 using AppAPI.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace AppAPI.Controllers
             _sieveProcessor = sieveProcessor;
         }
 
-        // GET: api/Product/GetAllProducts
+        [Authorize(Roles = "admin")]
         [HttpGet("GetAllProducts")] //ok
         public async Task<IActionResult> GetAllProduct()
         {

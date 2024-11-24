@@ -30,7 +30,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("getAllTransactionById")]
-        public async Task<IActionResult> getAllTransactionById(Guid Id)
+        public async Task<IActionResult> getTransactionById(Guid Id)
         {
             return Ok();
         }
