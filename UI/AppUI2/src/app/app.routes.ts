@@ -10,6 +10,7 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { AddProductComponent } from './component/add-product/add-product.component';
 import { ProductListComponent } from './component/product-list/product-list.component';
 import { UpdateProductComponent } from './component/update-product/update-product.component';
+import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'layout',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'login',

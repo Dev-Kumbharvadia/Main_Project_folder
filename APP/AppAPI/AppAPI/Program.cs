@@ -44,14 +44,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidateLifetime = true,
+            ValidateLifetime = true,  // Ensures token expiration is checked
             ValidateIssuerSigningKey = true,
+
+            // Set the valid issuer and audience from the configuration
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+
+            // The security key to validate the token signature
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+
+            // Optional: Allow for some clock skew when validating expiration (default is 5 minutes)
+            ClockSkew = TimeSpan.Zero // Optional: Set to zero if you don't want any clock skew allowance
         };
 
+        // Optional: Define how token errors are handled (such as expired tokens)
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                // Log or handle token authentication failure
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                {
+                    // Handle token expiration logic if needed
+                    Console.WriteLine("Token expired.");
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
+
 
 var app = builder.Build();
 

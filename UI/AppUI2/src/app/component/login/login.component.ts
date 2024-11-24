@@ -14,15 +14,15 @@ import { MiscService } from '../../services/misc.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  
+
   authServices = inject(AuthService);
   router = inject(Router);
-  loginData: ILoginModel = new LoginModel(); 
+  loginData: ILoginModel = new LoginModel();
   miscServices = inject(MiscService);
 
   onLogin(){
     this.authServices.onLogin(this.loginData).subscribe((res: any)=>{
-      this.miscServices.setCookie('jwtToken',res.data.jwtToken,1)
+      this.miscServices.setCookie('jwtToken',res.data.jwtToken,60)
       this.miscServices.setCookie('refreshToken',res.data.refreshToken,7);
       sessionStorage.setItem('userId',res.data.userId);
     });
