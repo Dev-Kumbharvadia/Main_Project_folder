@@ -2,8 +2,7 @@ export const Constant = {
     API_METHOD: {
         ADMIN: {
             REWRITE_ROLES: '/api/Admin/RewriteRoles',
-        },
-        AUDIT: {
+            DELETE: '/api/User/DeleteUser',
             GET_ALL: '/api/Audit/GetAllAudits',
             GET_BY_ID: '/api/Audit/GetAuditsByUserID',
         },
@@ -27,6 +26,7 @@ export const Constant = {
             ADD: '/api/Role/AddRole',
             REMOVE: '/api/Role/RemoveRole',
             UPDATE: '/api/Role/UpdateRole',
+            DELETE: '/api/Role/DeleteRole',
         },
         TRANSACTION: {
             GET_ALL: '/api/Transaction/getAllTransaction',
@@ -44,7 +44,6 @@ export const Constant = {
             GET_ALL_INFO_BY_ID: '/api/User/GetUserInfoById',
             GET_BY_ID: '/api/User/GetUserByID',
             UPDATE: '/api/User/UpdateUser',
-            DELETE: '/api/User/UpdateUser',
         }
     }
 }

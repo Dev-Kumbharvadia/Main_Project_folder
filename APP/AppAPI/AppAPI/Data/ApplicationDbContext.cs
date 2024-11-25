@@ -22,36 +22,36 @@ namespace AppAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Define relationships for other entities
+            // Define relationships with cascading delete
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Products)
                 .WithOne(p => p.Seller)
                 .HasForeignKey(p => p.SellerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.RefreshTokens)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.UserAudits)
                 .WithOne(a => a.User)
                 .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Transactions)
                 .WithOne()
                 .HasForeignKey(t => t.BuyerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
 
             modelBuilder.Entity<TransactionHistory>()
                 .HasOne<Product>()
                 .WithMany()
                 .HasForeignKey(t => t.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // Prevent delete if referenced
 
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
@@ -59,12 +59,14 @@ namespace AppAPI.Data
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId);
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete for UserRoles
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.RoleId);
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete for UserRoles
         }
     }
 }

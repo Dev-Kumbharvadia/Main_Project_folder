@@ -64,6 +64,7 @@ namespace AppAPI.Controllers
 
         // Read Sorted Products with Seller Info
         [HttpGet("Sorted")]
+        [Authorize(Roles = "buyer")]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
             // Start with the Product query
@@ -107,7 +108,8 @@ namespace AppAPI.Controllers
 
 
         // GET: api/Product/{id}
-        [HttpGet("GetProductById")] //ok
+        [HttpGet("GetProductById")]
+        [Authorize(Roles = "seller,admin")]
         public async Task<IActionResult> GetProduct(Guid id)
         {
             var product = await _context.Products.FindAsync(id);
@@ -121,6 +123,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpPost("AddProduct")]
+        [Authorize(Roles = "seller")]
         public async Task<IActionResult> AddProduct([FromForm] ProductUploadDTO productDto)
         {
             // Validate if the image file is provided
@@ -153,6 +156,7 @@ namespace AppAPI.Controllers
 
         // PUT: api/Product/{id}
         [HttpPut("UpdateProduct")] //ok
+        [Authorize(Roles = "seller")]
         public async Task<IActionResult> UpdateProduct(Guid id, [FromForm] ProductUpdateDTO productDto)
         {
             // Fetch the product by ID
@@ -207,6 +211,7 @@ namespace AppAPI.Controllers
 
         // DELETE: api/Product/{id}
         [HttpDelete("DeleteProduct")] //ok
+        [Authorize(Roles = "seller")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var product = await _context.Products.FindAsync(id);

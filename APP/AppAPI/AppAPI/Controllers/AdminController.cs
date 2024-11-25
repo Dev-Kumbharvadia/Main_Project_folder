@@ -1,18 +1,24 @@
 ﻿using AppAPI.Data;
 using AppAPI.Models.Domain;
+using AppAPI.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace TodoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles="admin")]
     public class AdminController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         [HttpPost("RewriteRoles")] //ok
@@ -56,6 +62,76 @@ namespace TodoAPI.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "User roles updated successfully." });
+        }
+
+        [HttpDelete("DeleteUser")]
+        public async Task<ActionResult<User>> DeleteUser(Guid id) // Confirm type matches UserId's type
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound($"User with ID {id} not found.");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+
+        // GET: api/audits
+        [HttpGet("GetAllAudits")] //ok
+        public IActionResult GetUserAudits()
+        {
+            try
+            {
+                var audits = _context.UserAudits
+                    .Include(a => a.User)
+                    .Select(a => new AuditWithUserDTO
+                    {
+                        UserAuditId = a.UserAuditId,
+                        UserId = a.UserId,
+                        Username = a.User!.Username,
+                        LoginTime = a.LoginTime,
+                        LogoutTime = a.LogoutTime
+                    })
+                    .ToList();
+
+                if (!audits.Any())
+                {
+                    return NotFound("No audits found.");
+                }
+
+                return Ok(audits);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        // GET: api/audits/{userId}
+        [HttpGet("GetAuditsByUserID")] //ok
+        public async Task<IActionResult> GetUserAuditsByUserId(Guid userId)
+        {
+            try
+            {
+                var audits = await _context.UserAudits
+                    .Where(a => a.UserId == userId)
+                    .ToListAsync();
+
+                if (!audits.Any())
+                {
+                    return NotFound($"No audits found for user with ID: {userId}");
+                }
+
+                return Ok(audits);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
         }
 
     }

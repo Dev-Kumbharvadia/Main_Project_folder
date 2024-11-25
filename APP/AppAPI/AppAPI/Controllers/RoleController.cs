@@ -32,6 +32,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet("GetUserRolesByID")] //ok
+        [Authorize(Roles = "admin")]
         public ActionResult<ApiResponse<List<string>>> GetUserRoles(Guid userId)
         {
             try
@@ -70,6 +71,7 @@ namespace TodoAPI.Controllers
 
         // POST: api/Role
         [HttpPost("AddRole")] //ok
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ApiResponse<Role>>> AddRole(RoleDTO role)
         {
             if (role == null)
@@ -117,6 +119,7 @@ namespace TodoAPI.Controllers
         // DELETE: api/Role/{id}
 
         [HttpPut("UpdateRole")] //ok
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateRole(Guid Id, RoleDTO role)
         {
             if (Id == Guid.Empty)
@@ -170,5 +173,35 @@ namespace TodoAPI.Controllers
 
             return Ok(new { Message = "Role updated successfully.", Role = existingRole });
         }
+
+        [HttpDelete("DeleteRole")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteRole(Guid id)
+        {
+            // Find the role by ID
+            var role = await _context.Roles.FindAsync(id);
+            if (role == null)
+            {
+                return NotFound($"Role with ID {id} was not found.");
+            }
+
+            // Remove the role
+            _context.Roles.Remove(role);
+
+            // Save changes to the database
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Handle potential exceptions, such as foreign key constraints
+                return BadRequest($"Failed to delete role: {ex.Message}");
+            }
+
+            // Return success response
+            return Ok($"Role with ID {id} has been deleted.");
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AppAPI.Data;
 using AppAPI.Models.Domain;
 using AppAPI.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,21 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("getAllTransaction")]
+        [Authorize]
         public async Task<IActionResult> getAllTransaction()
         {
             return Ok();
         }
 
         [HttpGet("getAllTransactionById")]
+        [Authorize]
         public async Task<IActionResult> getTransactionById(Guid Id)
         {
             return Ok();
         }
 
         [HttpPost("MakePurchase")]
+        [Authorize(Roles="buyer")]
         public async Task<IActionResult> MakePurchase(PurchaseDTO purchase)
         {
             // Validate the input
@@ -86,6 +90,7 @@ namespace AppAPI.Controllers
 
 
         [HttpGet("getTransactionHistory")]
+        [Authorize(Roles = "seller,admin")]
         public async Task<IActionResult> GetTransactionHistory()
         {
             // Step 1: Get the transaction history
@@ -125,6 +130,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("getTransactionHistoryByUserId")]
+        [Authorize(Roles = "buyer")]
         public async Task<IActionResult> GetTransactionHistoryByUserId(Guid id)
         {
             // Step 1: Filter transaction history by the provided BuyerId

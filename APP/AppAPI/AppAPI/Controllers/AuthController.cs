@@ -11,6 +11,7 @@ using AppAPI.Models.Domain;
 using TodoAPI.Models;
 using AppAPI.Models.Interface;
 using AppAPI.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TodoAPI.Controllers
 {
@@ -74,6 +75,7 @@ namespace TodoAPI.Controllers
 
         // POST: api/audit/logout/{userId}
         [HttpPost("Logout")] //ok
+        [Authorize]
         public IActionResult Logout(Guid userId)
         {
             try
@@ -204,6 +206,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [Authorize]
         public ActionResult<ApiResponse<RefreshTokenResponse>> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.RefreshToken))

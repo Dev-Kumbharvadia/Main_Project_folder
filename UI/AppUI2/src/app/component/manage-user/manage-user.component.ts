@@ -17,15 +17,19 @@ ngOnInit(): void {
   this.getAllUserInfo();
 }
 
-getAllUserInfo(){
-this.adminServices.getAllUserInfo().subscribe((res:any)=>{
-  this.users = res;
-  console.log(res);
-});
+getAllUserInfo() {
+  const currentUser = sessionStorage.getItem('userId'); // Retrieve current user ID
+  this.adminServices.getAllUserInfo().subscribe((res: any) => {
+    this.users = res.filter((user: any) => user.userId !== currentUser); // Exclude current user
+    console.log(this.users); // Log filtered user list
+  });
 }
 
 banUser(Id: string){
-
+  this.adminServices.banUser(Id).subscribe((res: any)=> {
+    alert(res.username + " banned");
+    window.location.reload();
+  })
 }
 
 }

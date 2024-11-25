@@ -10,6 +10,7 @@ using AppAPI.Models.Domain;
 using AppAPI.Models.DTO;
 using TodoAPI.Models;
 using AppAPI.Models.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TodoAPI.Controllers
 {
@@ -25,6 +26,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpPost("AssignRoles")] //ok
+        [Authorize(Roles="admin")]
         public async Task<ActionResult> UpdateUserRoles(Guid userId, List<Guid> roleIds)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -164,6 +166,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet("GetAllUsers")] //ok
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
@@ -171,6 +174,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet("GetAllUserInfo")]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetAllUsersInfo()
         {
             var users = await _context.Users
@@ -194,6 +198,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet("GetUserInfoById")]
+        [Authorize]
         public async Task<ActionResult<UserInfoDto>> GetUserInfoById(Guid id)
         {
             // Retrieve user information for the given Id
@@ -224,9 +229,8 @@ namespace TodoAPI.Controllers
         }
 
 
-
-
         [HttpGet("GetUserByID")] //ok
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByID(Guid Id)
         {
             var users = await _context.Users.FindAsync(Id);
@@ -234,6 +238,7 @@ namespace TodoAPI.Controllers
         }
 
         [HttpPut("UpdateUser")] //ok
+        [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> UpdateUser(Guid Id, UpdateUserDTO model)
         {
             if (model == null)
@@ -311,19 +316,6 @@ namespace TodoAPI.Controllers
                     Success = false,
                 });
             }
-        }
-
-        [HttpDelete("DeleteUser")] //ok
-        public async Task<ActionResult<IEnumerable<User>>> DeleteUser(Guid Id)
-        {
-            var users = await _context.Users.FindAsync(Id);
-            if(users == null)
-            {
-                return BadRequest("User not fond");
-            }
-            _context.Users.Remove(users);
-            _context.SaveChanges();
-            return Ok(users);
         }
 
     }

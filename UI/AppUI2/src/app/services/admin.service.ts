@@ -18,7 +18,7 @@ export class AdminService {
   }
 
   getAllAudits(): Observable<any>{
-    return this.http.get<any>(environment.API_URl + Constant.API_METHOD.AUDIT.GET_ALL);
+    return this.http.get<any>(environment.API_URl + Constant.API_METHOD.ADMIN.GET_ALL);
   }
 
   getAllUserInfo(): Observable<any>{
@@ -31,5 +31,9 @@ export class AdminService {
 
   getUserPurchases(Id: string): Observable<any>{
     return this.http.get<any>(environment.API_URl + Constant.API_METHOD.TRANSACTION.GET_TRANSACTION_HISTORY_BY_USER_ID + "?id=" + `${Id}`)
+  }
+
+  banUser(Id: string): Observable<any>{
+    return this.http.delete<any>(environment.API_URl + Constant.API_METHOD.ADMIN.DELETE + "?Id=" + `${Id}`);
   }
 }

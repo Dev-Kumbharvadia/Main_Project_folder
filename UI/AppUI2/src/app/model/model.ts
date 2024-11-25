@@ -106,3 +106,15 @@ export class UserTransaction {
   transactionDate: string = '';
   totalAmount: number = 0;
 }
+
+export class MakePurchase {
+  productId: string;
+  buyerId: string;
+  quantity: number;
+
+  constructor(productId: string, buyerId: string, quantity: number) {
+    this.productId = productId;
+    this.buyerId = buyerId;
+    this.quantity = quantity;
+  }
+}

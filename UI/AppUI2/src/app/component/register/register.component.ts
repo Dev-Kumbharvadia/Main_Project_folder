@@ -4,6 +4,7 @@ import { RegisterModel, Role } from '../../model/model';
 import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ export class RegisterComponent implements OnInit {
   authService = inject(AuthService);
   adminService = inject(AdminService);
   roles: Role[] = [];
+  router = inject(Router)
 
   registerForm = new FormGroup({
     username: new FormControl(),
@@ -49,6 +51,7 @@ export class RegisterComponent implements OnInit {
             console.log('Role assigned:', roleRes);
           });
       });
+      this.router.navigateByUrl('login');
   }
 
   loadRoles() {
