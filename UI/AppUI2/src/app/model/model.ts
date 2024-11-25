@@ -54,7 +54,7 @@ export class Filter {
   Filters: string = '';
   Sorts: string = '';
   Page: number = 1;
-  PageSize: number = 3;
+  PageSize: number = 20;
 }
 
 export class CartItem {

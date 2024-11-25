@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 using Sieve.Models;
 using Sieve.Services;
 using System;
+using System.Linq;
+using System.Numerics;
+using TodoAPI.Models;
 
 namespace AppAPI.Controllers
 {
@@ -62,28 +66,49 @@ namespace AppAPI.Controllers
         }
 
 
-        // Read Sorted Products with Seller Info
+
         [HttpGet("Sorted")]
-        [Authorize(Roles = "buyer,seller")]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
-            // Start with the Product query
-            var ProductQuery = _context.Products
-                .Include(p => p.Seller) // Eagerly load the Seller navigation property
+            var productQuery = _context.Products
+                .Include(p => p.Seller)
                 .AsQueryable();
 
-            // Apply sorting and filtering using SieveProcessor
-            ProductQuery = _sieveProcessor.Apply(model, ProductQuery);
+            productQuery = _sieveProcessor.Apply(model, productQuery);
 
-            // Execute the query to get the products
-            var products = await ProductQuery.ToListAsync();
+            int totalCount;
+
+            if(model.Page == null || model.PageSize == null)
+            {
+                model.Page = 1;
+                model.PageSize = 5;
+            }
+
+            if (model.Sorts == null && model.Filters == null)
+            {
+                totalCount = await _context.Products.CountAsync();
+            }
+            else
+            {
+                totalCount = await productQuery.CountAsync();
+            }
+
+            var totalPages = (int)Math.Ceiling((double)(totalCount / model.PageSize));
+
+            int page = model.Page.HasValue ? model.Page.Value : 1;
+            int pageSize = model.PageSize.HasValue ? model.PageSize.Value : 10;
+
+            var products = await productQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
 
             if (products == null || !products.Any())
             {
                 return NotFound(new { message = "No Products found." });
             }
 
-            // Transform data to include Seller details
             var result = products.Select(p => new
             {
                 p.ProductId,
@@ -102,9 +127,19 @@ namespace AppAPI.Controllers
                 }
             });
 
-            // Return the transformed result
-            return Ok(result);
+            return Ok(new ApiResponse<object>
+            {
+                Message = "Products retrieved successfully",
+                Success = true,
+                Data = new
+                {
+                    result,
+                    TotalPages = totalPages,
+                    currentPage = model.Page
+                }
+            });
         }
+
 
 
         // GET: api/Product/{id}

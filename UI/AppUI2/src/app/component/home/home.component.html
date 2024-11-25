@@ -1,136 +1,77 @@
-<form class="max-w-lg mx-auto m-4">
-  <div class="flex">
-    <label
-      for="search-dropdown"
-      class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >Your Email</label
-    >
-    <button
-      id="dropdown-button"
-      data-dropdown-toggle="dropdown"
-      class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-      type="button"
-    >
-      All categories
-      <svg
-        class="w-2.5 h-2.5 ms-2.5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 10 6"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="m1 1 4 4 4-4"
+<div class="relative overflow-x-auto m-4 sm:rounded-lg">
+  <!-- Search Container -->
+  <div
+    class="flex items-center justify-center py-6 bg-white border-b border-[#393E46]"
+  >
+    <!-- Search Wrapper -->
+    <div class="flex items-center space-x-2">
+      <div class="relative">
+        <!-- Search Input -->
+        <input
+          type="text"
+          id="table-search-users"
+          class="block w-96 py-2 pl-10 text-sm text-[#222831] bg-[#EEEEEE] border border-[#393E46] rounded-lg shadow-sm focus:ring-[#00ADB5] focus:border-[#00ADB5]"
+          placeholder="Search for users..."
         />
-      </svg>
-    </button>
-    <div
-      id="dropdown"
-      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-    >
-      <ul
-        class="py-2 text-sm text-gray-700 dark:text-gray-200"
-        aria-labelledby="dropdown-button"
+      </div>
+
+      <!-- Search Button -->
+      <button
+        type="button"
+        class="px-4 py-2 text-white bg-[#00ADB5] rounded-lg hover:bg-[#0094a4] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
       >
-        <li>
-          <button
-            type="button"
-            class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >
-            Mockups
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >
-            Templates
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >
-            Design
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-          >
-            Logos
-          </button>
-        </li>
-      </ul>
-    </div>
-    <div class="relative w-full">
-      <input
-        type="search"
-        id="search-dropdown"
-        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-        placeholder="Search products..."
-        required
-      />
+        Search
+      </button>
     </div>
   </div>
-</form>
+</div>
 
-<div class="notice-container">
+<div class="notice-container mx-auto">
   @for (product of products; track $index) {
-  <div class="bg-white rounded-lg shadow-md overflow-hidden mx-2 my-8">
-    <!-- Product Image -->
+
+  <div
+    class="bg-white rounded-lg shadow-xl overflow-hidden mx-3 mb-10 hover:shadow-2xl transition-shadow duration-300"
+  >
     <img
-      class="w-full h-48 object-cover"
+      class="w-24 h-24 shadow-md"
       [src]="'data:image/jpeg;base64,' + product.imageContent"
       alt="Product Image"
-      style="height: 100%; width: 100%"
+      style="height: 100%; width: 100%; object-fit: cover"
     />
-
-    <!-- Card Content -->
-    <div class="p-4">
-      <!-- Product Name -->
-      <h3 class="text-xl font-bold text-gray-800 truncate">
+    <div class="p-6">
+      <h3 class="text-2xl font-semibold text-[#393E46] truncate">
         {{ product.productName }}
       </h3>
 
-      <!-- Description -->
-      <p class="text-gray-600 text-sm mt-2 line-clamp-2">
+      <p class="text-[#393E46] text-sm mt-2 line-clamp-3">
         {{ product.description }}
       </p>
 
-      <!-- Price and Stock -->
       <div class="flex items-center justify-between mt-4">
-        <span class="text-lg font-bold text-green-600"
-          >${{ product.price }}</span
-        >
-        <span class="text-sm text-gray-500"
-          >{{ product.stockQuantity }} in stock</span
-        >
+        <span class="text-lg font-semibold text-[#00ADB5]">
+          ${{ product.price }}
+        </span>
+        <span class="text-sm text-[#393E46]">
+          {{ product.stockQuantity }} in stock
+        </span>
       </div>
     </div>
 
-    <!-- Seller Info -->
-    <div class="px-4 py-2 bg-gray-100 border-t">
-      <p class="text-sm text-gray-500">
+    <div class="px-6 py-2 bg-[#F3F4F6] border-t border-[#393E46]">
+      <p class="text-sm text-[#00ADB5]">
         Sold by:
-        <span class="font-medium text-gray-800">{{
+        <span class="font-medium text-[#393E46]">{{
           product.seller.username
         }}</span>
       </p>
-      <p class="text-xs text-gray-400">Added: {{ product.createdAt | date }}</p>
+      <p class="text-xs text-[#393E46]">
+        Added: {{ product.createdAt | date }}
+      </p>
     </div>
 
-    <!-- Add to Cart Button -->
-    <div class="px-4 py-4 bg-gray-100 flex items-center justify-between">
+    <div class="px-6 py-4 bg-[#F3F4F6] flex items-center justify-between">
       <button
-        class="w-full bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+        class="w-full bg-[#00ADB5] text-white text-sm font-medium py-2 px-4 rounded-md hover:bg-[#0094a4] focus:outline-none focus:ring-2 focus:ring-[#00ADB5] transition-colors duration-300"
         type="button"
         (click)="
           addToCart(
@@ -148,4 +89,55 @@
     </div>
   </div>
   }
+</div>
+
+<div class="clear-both pt-4">
+  <div
+    class="flex items-center justify-center mt-6 space-x-2 mx-auto max-w-fit"
+  >
+    <!-- Previous Button -->
+    <button
+      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] disabled:opacity-50 disabled:cursor-not-allowed"
+      type="button"
+      disabled
+    >
+      Previous
+    </button>
+
+    <!-- Page Numbers -->
+    <button
+      class="px-4 py-2 bg-[#00ADB5] text-white rounded-md hover:bg-[#0094a4] focus:outline-none focus:ring-2 focus:ring-[#00ADB5] transition-colors duration-300"
+      type="button"
+    >
+      1
+    </button>
+    <button
+      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+      type="button"
+    >
+      2
+    </button>
+    <button
+      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+      type="button"
+    >
+      3
+    </button>
+    <span class="px-2 py-1 text-[#393E46]">...</span>
+    <button
+      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+      type="button"
+    >
+      10
+    </button>
+
+    <!-- Next Button -->
+    <button
+      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] disabled:opacity-50 disabled:cursor-not-allowed"
+      type="button"
+      disabled
+    >
+      Next
+    </button>
+  </div>
 </div>
