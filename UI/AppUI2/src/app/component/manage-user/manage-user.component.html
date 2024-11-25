@@ -1,5 +1,165 @@
 <div class="relative overflow-x-auto m-4 sm:rounded-lg">
   <div
+    class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-[#EEEEEE] border-b-2 border-[#393E46]"
+  >
+    <div>
+      <button
+        id="dropdownActionButton"
+        data-dropdown-toggle="dropdownAction"
+        class="inline-flex items-center text-[#222831] bg-[#EEEEEE] border border-[#393E46] focus:outline-none hover:bg-[#00ADB5] hover:text-white focus:ring-4 focus:ring-[#00ADB5] font-medium rounded-lg text-sm px-3 py-1.5"
+        type="button"
+      >
+        Action
+        <svg
+          class="w-2.5 h-2.5 ms-2.5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 10 6"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 4 4 4-4"
+          />
+        </svg>
+      </button>
+      <!-- Dropdown menu -->
+      <div
+        id="dropdownAction"
+        class="z-10 hidden bg-[#EEEEEE] divide-y divide-[#393E46] rounded-lg shadow w-44"
+      >
+        <ul
+          class="py-1 text-sm text-[#393E46]"
+          aria-labelledby="dropdownActionButton"
+        >
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-[#00ADB5] hover:text-white"
+              >Reward</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-[#00ADB5] hover:text-white"
+              >Promote</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-[#00ADB5] hover:text-white"
+              >Activate account</a
+            >
+          </li>
+        </ul>
+        <div class="py-1">
+          <a
+            href="#"
+            class="block px-4 py-2 text-sm text-[#393E46] hover:bg-red-500 hover:text-white"
+            >Delete User</a
+          >
+        </div>
+      </div>
+    </div>
+    <div>
+      <label for="table-search" class="sr-only">Search</label>
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-[#393E46]"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="text"
+          id="table-search-users"
+          class="block py-1.5 ps-10 text-sm text-[#222831] border border-[#393E46] rounded-lg w-80 bg-[#EEEEEE] focus:ring-[#00ADB5] focus:border-[#00ADB5]"
+          placeholder="Search for users"
+        />
+      </div>
+    </div>
+  </div>
+  <table
+    class="w-full text-sm text-left text-[#393E46] bg-[#EEEEEE]"
+  >
+    <thead
+      class="text-xs uppercase bg-[#393E46] text-[#EEEEEE]"
+    >
+      <tr>
+        <th scope="col" class="p-4">
+          #
+        </th>
+        <th scope="col" class="px-6 py-3">UserId</th>
+        <th scope="col" class="px-6 py-3">Username</th>
+        <th scope="col" class="px-6 py-3">Email</th>
+        <th scope="col" class="px-6 py-3">Status</th>
+        <th scope="col" class="px-6 py-3">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users; track $index) {
+      <tr
+        class="bg-[#EEEEEE] border-b border-[#393E46] hover:bg-[#00ADB5] hover:text-white"
+      >
+        <td class="w-4 p-4">
+          {{$index + 1}}
+        </td>
+        <th
+          scope="row"
+          class="px-6 py-4 font-semibold text-[#222831]"
+        >
+          {{user.userId}}
+        </th>
+        <td class="px-6 py-4">{{user.username}}</td>
+        <td class="px-6 py-4">{{user.email}}</td>
+        <td class="px-6 py-4">
+          <div class="flex items-center">
+            @if (user.lastLogoutTime)
+            {
+              <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
+              Offline
+            }
+            @else{
+              <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
+              Online
+            }
+          </div>
+        </td>
+        <td class="px-6 py-4">
+          <button
+            class="bg-red-500 text-white py-1 px-3 rounded hover:bg-[#222831]"
+            (click)="banUser(user.userId)"
+          >
+            Ban User
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+
+<!-- <div class="relative overflow-x-auto m-4 sm:rounded-lg">
+  <div
     class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white"
   >
     <div class="">
@@ -27,7 +187,6 @@
           />
         </svg>
       </button>
-      <!-- Dropdown menu -->
       <div
         id="dropdownAction"
         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
@@ -165,4 +324,4 @@
 
     </tbody>
   </table>
-</div>
+</div> -->

@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
   filter = new Filter();
 
   ngOnInit(): void {
-    this.getAllProducts()
     this.getSortedProducts();
     this.products = this.productService.productsList;
     this.cartService.cartItems = [];

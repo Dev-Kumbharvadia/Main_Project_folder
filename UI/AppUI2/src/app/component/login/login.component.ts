@@ -25,7 +25,7 @@ export class LoginComponent {
       this.miscServices.setCookie('jwtToken',res.data.jwtToken,60)
       this.miscServices.setCookie('refreshToken',res.data.refreshToken,7);
       sessionStorage.setItem('userId',res.data.userId);
+      this.router.navigateByUrl('layout');
     });
-    this.router.navigateByUrl('layout/home');
   }
 }

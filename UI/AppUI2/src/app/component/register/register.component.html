@@ -1,25 +1,25 @@
-<div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
+<div class="min-h-screen flex justify-center items-center bg-[#f8f9fa]">
   <form
     [formGroup]="registerForm"
     (ngSubmit)="onRegister()"
-    class="max-w-sm w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg"
+    class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-gray-200"
   >
     <!-- Title -->
     <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Register</h2>
 
-    <!-- Usernmae Input -->
+    <!-- Username Input -->
     <div class="relative z-0 w-full mb-5 group">
       <input
         type="text"
         name="username"
         id="username"
-        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
         placeholder=" "
         required
         formControlName="username"
       />
       <label
-        for="email"
+        for="username"
         class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
       >
         Username
@@ -32,7 +32,7 @@
         type="email"
         name="email"
         id="email"
-        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
         placeholder=" "
         required
         formControlName="email"
@@ -51,7 +51,7 @@
         type="password"
         name="password"
         id="password"
-        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
         placeholder=" "
         required
         formControlName="password"
@@ -70,7 +70,7 @@
         type="password"
         name="confirm_password"
         id="confirm_password"
-        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] appearance-none focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
         placeholder=" "
         required
         formControlName="confirmPassword"
@@ -88,14 +88,12 @@
       <select
         name="role"
         id="role"
-        class="block py-2.5 px-0 w-full text-sm text-[#393E46] bg-transparent border-0 border-b-2 border-[#393E46] focus:outline-none focus:ring-0 focus:border-[#00ADB5] peer"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
         required
         formControlName="roleId"
       >
         <option value="" disabled selected hidden>Choose your role</option>
-        @for (role of roles; track $index) {
-        <option [value]="role.roleId">{{ role.roleName }}</option>
-        }
+        <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}</option>
       </select>
       <label
         for="role"
@@ -108,10 +106,22 @@
     <!-- Submit Button -->
     <button
       type="submit"
-      class="w-full py-2.5 text-sm font-medium text-[#222831] bg-[#71C9CE] hover:bg-[#00ADB5] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#00ADB5] text-center"
+      class="w-full py-3 text-sm font-medium text-white bg-[#00ADB5] hover:bg-[#008a94] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#00ADB5]"
     >
       Register
     </button>
-    <a href="http://localhost:4200/login">log</a>
+
+    <!-- Login Redirect -->
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        Already have an account?
+        <a
+          href="/login"
+          class="text-[#00ADB5] hover:underline hover:text-[#008a94]"
+        >
+          Login
+        </a>
+      </p>
+    </div>
   </form>
 </div>

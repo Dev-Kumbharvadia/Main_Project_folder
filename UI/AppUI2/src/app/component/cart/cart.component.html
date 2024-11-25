@@ -1,47 +1,36 @@
-<div class="relative overflow-x-auto m-4 sm:rounded-lg shadow-lg bg-white dark:bg-gray-800">
-  <table
-    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-  >
-    <thead
-      class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400"
-    >
+<div class="relative overflow-x-auto m-6 sm:rounded-lg">
+  <table class="w-full text-sm text-left text-[#222831] bg-[#EEEEEE]">
+    <thead class="text-xs uppercase bg-[#393E46] text-[#EEEEEE]">
       <tr>
-        <th scope="col" class="px-16 py-3">
-          <span class="sr-only">Image</span>
-        </th>
+        <th scope="col" class="px-6 py-3">Image</th>
         <th scope="col" class="px-6 py-3">Product</th>
-        <th scope="col" class="px-6 py-3">Qty</th>
+        <th scope="col" class="px-6 py-3">Quantity</th>
         <th scope="col" class="px-6 py-3">Price</th>
-        <th scope="col" class="px-6 py-3">Action</th>
+        <th scope="col" class="px-6 py-3">Actions</th>
       </tr>
     </thead>
     <tbody>
-      @for (product of cartItems; track $index)
-      {
-      <tr
-        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-      >
+      @for (product of cartItems; track $index) {
+      <tr class="bg-[#EEEEEE] border-b border-[#393E46] hover:bg-[#E1E5EA]">
         <td class="p-4">
           <img
             [src]="'data:image/jpeg;base64,' + product.imageContent"
-            class="w-16 md:w-32 max-w-full max-h-full rounded-md"
+            class="h-16 w-16 object-cover rounded"
             [alt]="product.productName"
           />
         </td>
-        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+        <td class="px-6 py-4 font-medium text-[#222831]">
           {{ product.productName }}
         </td>
         <td class="px-6 py-4">
           <div class="flex items-center">
             <button
-              class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+              class="inline-flex items-center justify-center p-1 me-3 h-8 w-8 text-sm font-medium text-[#393E46] bg-[#EEEEEE] border border-[#393E46] rounded-full hover:bg-[#393E46] hover:text-[#EEEEEE] focus:outline-none focus:ring-2 focus:ring-[#393E46]"
               type="button"
               (click)="subItem(product.productId)"
             >
-              <span class="sr-only">Decrease Quantity</span>
               <svg
                 class="w-3 h-3"
-                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 18 2"
@@ -55,16 +44,14 @@
                 />
               </svg>
             </button>
-            <div class="font-medium px-3">{{ product.cartQuantity }}</div>
+            <div class="font-medium mx-3 text-[#222831]">{{ product.cartQuantity }}</div>
             <button
-              class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+              class="inline-flex items-center justify-center h-8 w-8 p-1 ms-3 text-sm font-medium text-[#393E46] bg-[#EEEEEE] border border-[#393E46] rounded-full hover:bg-[#393E46] hover:text-[#EEEEEE] focus:outline-none focus:ring-2 focus:ring-[#393E46]"
               type="button"
               (click)="addItem(product.productId)"
             >
-              <span class="sr-only">Increase Quantity</span>
               <svg
                 class="w-3 h-3"
-                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 18 18"
@@ -80,17 +67,17 @@
             </button>
           </div>
         </td>
-        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-          ${{product.price}} 
+        <td class="px-6 py-4 text-green-600 font-bold">
+          ${{ product.price }}
           <br />
-          <span class="text-sm text-gray-500 dark:text-gray-400">
-            Total: ${{product.price * product.cartQuantity }}
+          <span class="text-sm text-[#393E46]">
+            Total: ${{ product.price * product.cartQuantity }}
           </span>
         </td>
         <td class="px-6 py-4">
           <button
             type="button"
-            class="font-medium text-red-600 hover:text-red-400 dark:text-red-500 bg-[#374151] hover:bg-[#4f5e76] p-1.5 rounded-md"
+            class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
             (click)="removeItem(product.productId)"
           >
             Remove
@@ -100,15 +87,124 @@
       }
     </tbody>
   </table>
-  <div class="flex flex-wrap items-center justify-between px-4 py-3 bg-gray-100 dark:bg-gray-700">
-    <span class="text-lg font-semibold text-gray-700 dark:text-gray-300">
+  <div class="flex flex-wrap items-center justify-between px-4 py-3 bg-[#EEEEEE] text-[#222831]">
+    <span class="text-lg font-semibold">
       Grand Total: ${{ grandTotal() }}
     </span>
     <button
-      class="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+      class="px-6 py-2 text-sm font-medium text-[#EEEEEE] bg-[#00ADB5] rounded-lg hover:bg-[#00A1A5] focus:outline-none focus:ring-4 focus:ring-[#00ADB5]"
       (click)="checkout()"
     >
       Checkout
     </button>
   </div>
 </div>
+
+
+<!-- <div class="relative overflow-x-auto m-6 sm:rounded-lg">
+  <table
+    class="w-full text-sm text-left text-[#393E46] bg-[#EEEEEE]"
+  >
+    <thead
+      class="text-xs uppercase bg-[#393E46] text-[#EEEEEE]"
+    >
+      <tr>
+        <th scope="col" class="px-6 py-3">Image</th>
+        <th scope="col" class="px-6 py-3">Product</th>
+        <th scope="col" class="px-6 py-3">Quantity</th>
+        <th scope="col" class="px-6 py-3">Price</th>
+        <th scope="col" class="px-6 py-3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of cartItems; track $index) {
+      <tr
+        class="bg-[#EEEEEE] border-b border-[#393E46] hover:bg-[#77777773]"
+      >
+        <td class="p-4">
+          <img
+            [src]="'data:image/jpeg;base64,' + product.imageContent"
+            class="h-16 w-16 object-cover rounded"
+            [alt]="product.productName"
+          />
+        </td>
+        <td class="px-6 py-4 font-semibold text-[#222831]">
+          {{ product.productName }}
+        </td>
+        <td class="px-6 py-4">
+          <div class="flex items-center">
+            <button
+              class="inline-flex items-center justify-center p-1 me-3 h-8 w-8 text-sm font-medium text-[#222831] bg-[#EEEEEE] border border-[#393E46] rounded-full hover:bg-[#00ADB5] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+              type="button"
+              (click)="subItem(product.productId)"
+            >
+              <svg
+                class="w-3 h-3"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 18 2"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h16"
+                />
+              </svg>
+            </button>
+            <div class="font-medium mx-3">{{ product.cartQuantity }}</div>
+            <button
+              class="inline-flex items-center justify-center h-8 w-8 p-1 ms-3 text-sm font-medium text-[#222831] bg-[#EEEEEE] border border-[#393E46] rounded-full hover:bg-[#00ADB5] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+              type="button"
+              (click)="addItem(product.productId)"
+            >
+              <svg
+                class="w-3 h-3"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 18 18"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 1v16M1 9h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </td>
+        <td class="px-6 py-4 text-green-600 font-bold">
+          ${{ product.price }}
+          <br />
+          <span class="text-sm text-[#393E46]">
+            Total: ${{ product.price * product.cartQuantity }}
+          </span>
+        </td>
+        <td class="px-6 py-4">
+          <button
+            type="button"
+            class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+            (click)="removeItem(product.productId)"
+          >
+            Remove
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <div class="flex flex-wrap items-center justify-between px-4 py-3 bg-[#393E46] text-[#EEEEEE]">
+    <span class="text-lg font-semibold">
+      Grand Total: ${{ grandTotal() }}
+    </span>
+    <button
+      class="px-6 py-2 text-sm font-medium text-white bg-[#00ADB5] rounded-lg hover:bg-[#00ADB5] focus:outline-none focus:ring-4 focus:ring-[#00ADB5]"
+      (click)="checkout()"
+    >
+      Checkout
+    </button>
+  </div>
+</div> -->

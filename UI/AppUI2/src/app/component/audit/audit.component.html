@@ -1,4 +1,199 @@
-<div class="relative m-4 sm:rounded-lg">
+<div class="relative overflow-x-auto m-4 sm:rounded-lg">
+  <div
+    class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-[#EEEEEE] border-b-2 border-[#393E46]"
+  >
+    <div>
+      <button
+        id="dropdownRadioButton"
+        data-dropdown-toggle="dropdownRadio"
+        class="inline-flex items-center text-[#222831] bg-[#EEEEEE] border border-[#393E46] focus:outline-none hover:bg-[#00ADB5] hover:text-white focus:ring-4 focus:ring-[#00ADB5] font-medium rounded-lg text-sm px-3 py-1.5"
+        type="button"
+      >
+        Last 30 days
+        <svg
+          class="w-2.5 h-2.5 ms-2.5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 10 6"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 4 4 4-4"
+          />
+        </svg>
+      </button>
+      <!-- Dropdown menu -->
+      <div
+        id="dropdownRadio"
+        class="z-10 hidden bg-[#EEEEEE] divide-y divide-[#393E46] rounded-lg shadow w-48"
+      >
+        <ul
+          class="py-1 text-sm text-[#393E46]"
+          aria-labelledby="dropdownRadioButton"
+        >
+          <li>
+            <div
+              class="flex items-center p-2 rounded hover:bg-[#00ADB5] hover:text-white"
+            >
+              <input
+                id="filter-radio-example-1"
+                type="radio"
+                value=""
+                name="filter-radio"
+                class="w-4 h-4 text-[#00ADB5] bg-[#EEEEEE] border-[#393E46] focus:ring-[#00ADB5]"
+              />
+              <label
+                for="filter-radio-example-1"
+                class="w-full ms-2 text-sm font-medium text-[#222831]"
+                >Last day</label
+              >
+            </div>
+          </li>
+          <li>
+            <div
+              class="flex items-center p-2 rounded hover:bg-[#00ADB5] hover:text-white"
+            >
+              <input
+                checked=""
+                id="filter-radio-example-2"
+                type="radio"
+                value=""
+                name="filter-radio"
+                class="w-4 h-4 text-[#00ADB5] bg-[#EEEEEE] border-[#393E46] focus:ring-[#00ADB5]"
+              />
+              <label
+                for="filter-radio-example-2"
+                class="w-full ms-2 text-sm font-medium text-[#222831]"
+                >Last 7 days</label
+              >
+            </div>
+          </li>
+          <li>
+            <div
+              class="flex items-center p-2 rounded hover:bg-[#00ADB5] hover:text-white"
+            >
+              <input
+                id="filter-radio-example-3"
+                type="radio"
+                value=""
+                name="filter-radio"
+                class="w-4 h-4 text-[#00ADB5] bg-[#EEEEEE] border-[#393E46] focus:ring-[#00ADB5]"
+              />
+              <label
+                for="filter-radio-example-3"
+                class="w-full ms-2 text-sm font-medium text-[#222831]"
+                >Last 30 days</label
+              >
+            </div>
+          </li>
+          <li>
+            <div
+              class="flex items-center p-2 rounded hover:bg-[#00ADB5] hover:text-white"
+            >
+              <input
+                id="filter-radio-example-4"
+                type="radio"
+                value=""
+                name="filter-radio"
+                class="w-4 h-4 text-[#00ADB5] bg-[#EEEEEE] border-[#393E46] focus:ring-[#00ADB5]"
+              />
+              <label
+                for="filter-radio-example-4"
+                class="w-full ms-2 text-sm font-medium text-[#222831]"
+                >Last month</label
+              >
+            </div>
+          </li>
+          <li>
+            <div
+              class="flex items-center p-2 rounded hover:bg-[#00ADB5] hover:text-white"
+            >
+              <input
+                id="filter-radio-example-5"
+                type="radio"
+                value=""
+                name="filter-radio"
+                class="w-4 h-4 text-[#00ADB5] bg-[#EEEEEE] border-[#393E46] focus:ring-[#00ADB5]"
+              />
+              <label
+                for="filter-radio-example-5"
+                class="w-full ms-2 text-sm font-medium text-[#222831]"
+                >Last year</label
+              >
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <label for="table-search" class="sr-only">Search</label>
+    <div class="relative">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      >
+        <svg
+          class="w-5 h-5 text-[#393E46]"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+          />
+        </svg>
+      </div>
+      <input
+        type="text"
+        id="table-search"
+        class="block py-1.5 ps-10 text-sm text-[#222831] border border-[#393E46] rounded-lg w-80 bg-[#EEEEEE] focus:ring-[#00ADB5] focus:border-[#00ADB5]"
+        placeholder="Search for items"
+      />
+    </div>
+  </div>
+  <table class="w-full text-sm text-left text-[#222831] bg-[#EEEEEE]">
+    <thead class="text-xs uppercase bg-[#393E46] text-[#EEEEEE]">
+      <tr>
+        <th scope="col" class="p-4">#</th>
+        <th scope="col" class="px-6 py-3">Audit Id</th>
+        <th scope="col" class="px-6 py-3">User Id</th>
+        <th scope="col" class="px-6 py-3">User Name</th>
+        <th scope="col" class="px-6 py-3">Login Time</th>
+        <th scope="col" class="px-6 py-3">Logout Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (audit of audits; track $index){
+      <tr
+        class="bg-[#EEEEEE] border-b border-[#393E46] hover:bg-[#00ADB5] hover:text-white"
+      >
+        <td class="w-4 p-4">{{$index + 1}}</td>
+        <th
+          scope="row"
+          class="px-6 py-4 font-medium text-[#222831]"
+        >
+          {{audit.userAuditId}}
+        </th>
+        <td class="px-6 py-4">{{audit.userId}}</td>
+        <td class="px-6 py-4">{{audit.username}}</td>
+        <td class="px-6 py-4">{{audit.loginTime | date:'MM/dd/yyyy hh:mm a'}}</td>
+        <td class="px-6 py-4">
+          {{audit.logoutTime ? (audit.logoutTime | date:'MM/dd/yyyy hh:mm a') : 'Session Active'}}
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- <div class="relative m-4 sm:rounded-lg">
   <div
     class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4"
   >
@@ -37,7 +232,6 @@
           />
         </svg>
       </button>
-      <!-- Dropdown menu -->
       <div
         id="dropdownRadio"
         class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -221,4 +415,4 @@
     }
     </tbody>
   </table>
-</div>
+</div> -->

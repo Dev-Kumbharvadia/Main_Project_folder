@@ -1,5 +1,158 @@
-<div class="min-h-screen bg-gray-100 p-6">
-    <!-- Search and Filter Form -->
+<div class="relative overflow-x-auto m-6 sm:rounded-lg">
+  <div
+    class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-[#EEEEEE] border-b-2 border-[#393E46] p-2"
+  >
+    <div>
+      <button
+        id="dropdown-button"
+        data-dropdown-toggle="dropdown"
+        class="inline-flex items-center text-[#222831] bg-[#EEEEEE] border border-[#393E46] focus:outline-none hover:bg-[#00ADB5] hover:text-white focus:ring-4 focus:ring-[#00ADB5] font-medium rounded-lg text-sm px-3 py-1.5"
+        type="button"
+      >
+        All Categories
+        <svg
+          class="w-2.5 h-2.5 ms-2.5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 10 6"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 4 4 4-4"
+          />
+        </svg>
+      </button>
+      <!-- Dropdown menu -->
+      <div
+        id="dropdown"
+        class="z-10 hidden bg-[#EEEEEE] divide-y divide-[#393E46] rounded-lg shadow w-44"
+      >
+        <ul
+          class="py-1 text-sm text-[#393E46]"
+          aria-labelledby="dropdown-button"
+        >
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-[#00ADB5] hover:text-white"
+              >Category 1</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-[#00ADB5] hover:text-white"
+              >Category 2</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 hover:bg-[#00ADB5] hover:text-white"
+              >Category 3</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <label for="product-search" class="sr-only">Search</label>
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-[#393E46]"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="text"
+          id="product-search"
+          class="block py-1.5 ps-10 text-sm text-[#222831] border border-[#393E46] rounded-lg w-80 bg-[#EEEEEE] focus:ring-[#00ADB5] focus:border-[#00ADB5]"
+          placeholder="Search products"
+        />
+      </div>
+    </div>
+  </div>
+  <table
+    class="w-full text-sm text-left text-[#393E46] bg-[#EEEEEE]"
+  >
+    <thead
+      class="text-xs uppercase bg-[#393E46] text-[#EEEEEE]"
+    >
+      <tr>
+        <th class="px-6 py-3">Image</th>
+        <th class="px-6 py-3">Name</th>
+        <th class="px-6 py-3">Description</th>
+        <th class="px-6 py-3">Price</th>
+        <th class="px-6 py-3">Stock</th>
+        <th class="px-6 py-3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of products; track $index) {
+      <tr
+        class="bg-[#EEEEEE] border-b border-[#393E46] hover:bg-[#77777773]"
+      >
+        <td class="px-6 py-4">
+          <img
+            class="h-16 w-16 object-cover rounded"
+            [src]="'data:image/jpeg;base64,' + product.imageContent"
+            alt="Product Image"
+          />
+        </td>
+        <td class="px-6 py-4 font-semibold text-[#222831]">
+          {{ product.productName }}
+        </td>
+        <td class="px-6 py-4 text-sm truncate w-48">
+          {{ product.description }}
+        </td>
+        <td class="px-6 py-4 text-green-600 font-bold">
+          ${{ product.price }}
+        </td>
+        <td class="px-6 py-4">
+          {{ product.stockQuantity }}
+        </td>
+        <td class="items-center justify-center">
+          <div>
+            <button
+              class="bg-blue-500 text-white py-1 m-2 px-3 rounded hover:bg-blue-600"
+              (click)="editProduct(product.productId)"
+            >
+              Edit
+            </button>
+            <button
+              class="bg-red-500 text-white py-1 m-2 px-3 rounded hover:bg-red-600"
+              (click)="deleteProduct(product.productId)"
+            >
+              Delete
+            </button>
+          </div>
+        </td>
+        
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- <div class="min-h-screen bg-gray-100 p-6">
     <form class="max-w-lg mx-auto mb-6">
       <div class="flex">
         <button
@@ -35,7 +188,6 @@
       </div>
     </form>
   
-    <!-- Product List -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -70,14 +222,12 @@
             </td>
             <td class="px-6 py-4 text-gray-500">{{ product.stockQuantity }}</td>
             <td class="px-6 py-4 flex space-x-2">
-              <!-- Edit Button -->
               <button
                 class="text-blue-600 hover:text-blue-800 text-sm font-medium"
                 (click)="editProduct(product.productId)"
               >
                 Edit
               </button>
-              <!-- Delete Button -->
               <button
                 class="text-red-600 hover:text-red-800 text-sm font-medium"
                 (click)="deleteProduct(product.productId)"
@@ -91,4 +241,4 @@
       </table>
     </div>
   </div>
-  
+   -->

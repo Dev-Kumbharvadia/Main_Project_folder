@@ -2,9 +2,9 @@ export const Constant = {
     API_METHOD: {
         ADMIN: {
             REWRITE_ROLES: '/api/Admin/RewriteRoles',
-            DELETE: '/api/User/DeleteUser',
-            GET_ALL: '/api/Audit/GetAllAudits',
-            GET_BY_ID: '/api/Audit/GetAuditsByUserID',
+            DELETE: '/api/Admin/DeleteUser',
+            GET_ALL: '/api/Admin/GetAllAudits',
+            GET_BY_ID: '/api/Admin/GetAuditsByUserID',
         },
         AUTH: {
             LOGOUT: '/api/Auth/Logout',

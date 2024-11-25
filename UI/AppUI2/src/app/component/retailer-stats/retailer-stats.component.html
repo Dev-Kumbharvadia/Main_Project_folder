@@ -1,0 +1,182 @@
+<div class="min-h-screen flex flex-col items-center bg-[#F3F4F6] py-8">
+    <div class="max-w-lg w-full bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-[#393E46] mb-6 text-center">Retailer Dashboard</h2>
+
+        <!-- Retailer Info -->
+        <div class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
+            <p class="text-lg text-gray-700">Welcome, 
+                <span class="font-bold text-[#00ADB5]">{{ retailerName }}</span>
+            </p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
+            <div class="mb-4">
+                <p class="text-sm text-gray-600">Total Items Sold:</p>
+                <p class="text-2xl font-semibold text-[#00ADB5]">{{ totalItemsSold }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Total Money Earned:</p>
+                <p class="text-2xl font-semibold text-[#00ADB5]">{{ totalMoneyEarned | currency }}</p>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="flex justify-end">
+            <button
+                type="button"
+                class="px-6 py-2 bg-[#00ADB5] text-white font-medium rounded-lg hover:bg-[#007B84] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+                (click)="toggleDetails()"
+            >
+                {{ showDetails ? 'Hide Details' : 'View Details' }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Details Section -->
+    <div *ngIf="showDetails" class="mt-8 w-full max-w-4xl bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-semibold text-[#393E46] mb-6">Product Details</h3>
+
+        <!-- Search and Filter Row -->
+        <div class="flex items-center gap-4 mb-6">
+            <!-- Search Bar -->
+            <div class="flex-1">
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search for products..."
+                    class="block w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+                    [(ngModel)]="searchQuery"
+                />
+            </div>
+
+            <!-- Filter Dropdown -->
+            <div>
+                <select
+                    id="filter"
+                    class="block w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+                    [(ngModel)]="selectedFilter"
+                >
+                    <option value="all">All Products</option>
+                    <option value="date">By Date</option>
+                    <option value="category">By Category</option>
+                    <option value="price">By Price</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-300 bg-gray-50 text-left text-sm text-gray-600">
+                <thead class="bg-[#EEEEEE]">
+                    <tr>
+                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Product Name</th>
+                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Category</th>
+                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Price</th>
+                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Quantity Sold</th>
+                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Total Earned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let product of filteredProducts()"
+                        class="odd:bg-white even:bg-gray-50 hover:bg-gray-100"
+                    >
+                        <td class="px-6 py-3 border border-gray-300">{{ product.productName }}</td>
+                        <td class="px-6 py-3 border border-gray-300">{{ product.category }}</td>
+                        <td class="px-6 py-3 border border-gray-300">{{ product.price | currency }}</td>
+                        <td class="px-6 py-3 border border-gray-300">{{ product.quantitySold }}</td>
+                        <td class="px-6 py-3 border border-gray-300 text-[#00ADB5] font-semibold">{{ product.totalEarned | currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="min-h-screen flex flex-col items-center bg-[#EEEEEE] py-8">
+    <div class="max-w-lg w-full bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Retailer Dashboard</h2>
+
+        <div class="mb-4">
+            <p class="text-lg text-[#393E46]">Welcome, <span class="font-semibold">{{ retailerName }}</span></p>
+        </div>
+
+        <div class="mt-6">
+            <div class="mb-4">
+                <p class="text-sm text-[#393E46]">Total Items Sold:</p>
+                <p class="text-xl font-bold text-[#00ADB5]">{{ totalItemsSold }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm text-[#393E46]">Total Money Earned:</p>
+                <p class="text-xl font-bold text-[#00ADB5]">{{ totalMoneyEarned | currency }}</p>
+            </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <button
+                type="button"
+                class="px-4 py-2 bg-[#00ADB5] text-white rounded-md hover:bg-[#393E46] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+                (click)="toggleDetails()"
+            >
+                {{ showDetails ? 'Hide Details' : 'View Details' }}
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="showDetails" class="mt-8 w-full max-w-4xl bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-bold text-[#393E46] mb-4">Product Details</h3>
+
+        <div class="flex items-center gap-4 mb-6">
+            <div class="flex-1">
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search for products..."
+                    class="block w-full px-3 py-2 border border-[#393E46] rounded-md focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+                    [(ngModel)]="searchQuery"
+                />
+            </div>
+
+            <div>
+                <select
+                    id="filter"
+                    class="block px-3 py-2 border border-[#393E46] rounded-md focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+                    [(ngModel)]="selectedFilter"
+                >
+                    <option value="all">All Products</option>
+                    <option value="date">By Date</option>
+                    <option value="category">By Category</option>
+                    <option value="price">By Price</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto border-collapse">
+                <thead>
+                    <tr class="bg-[#00ADB5] text-white text-left">
+                        <th class="px-4 py-2">Product Name</th>
+                        <th class="px-4 py-2">Category</th>
+                        <th class="px-4 py-2">Price</th>
+                        <th class="px-4 py-2">Quantity Sold</th>
+                        <th class="px-4 py-2">Total Earned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let product of filteredProducts()"
+                        class="border-b hover:bg-[#EEEEEE]"
+                    >
+                        <td class="px-4 py-2">{{ product.productName }}</td>
+                        <td class="px-4 py-2">{{ product.category }}</td>
+                        <td class="px-4 py-2">{{ product.price | currency }}</td>
+                        <td class="px-4 py-2">{{ product.quantitySold }}</td>
+                        <td class="px-4 py-2">{{ product.totalEarned | currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> -->

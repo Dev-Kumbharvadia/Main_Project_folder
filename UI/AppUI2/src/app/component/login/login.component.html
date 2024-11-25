@@ -1,9 +1,8 @@
-<div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
+<!-- <div class="min-h-screen flex justify-center items-center bg-[#EEEEEE]">
   <form class="max-w-sm w-full bg-[#EEEEEE] p-6 rounded-lg shadow-lg" (ngSubmit)="onLogin()">
-    <!-- Title -->
+    Title 
     <h2 class="text-center text-2xl font-bold text-[#393E46] mb-6">Login</h2>
 
-    <!-- Email Input -->
     <div class="relative z-0 w-full mb-5 group">
       <input
       type="email"
@@ -22,7 +21,6 @@
       </label>
     </div>
 
-    <!-- Password Input -->
     <div class="relative z-0 w-full mb-6 group">
       <input
         type="password"
@@ -41,7 +39,7 @@
       </label>
     </div>
 
-    <!-- Submit Button -->
+
     <button
     type="submit"
     class="w-full py-2.5 text-sm font-medium text-[#222831] hover:text-[#11151a] bg-[#71C9CE] hover:bg-[#00acb5b7] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#00ADB5] text-center"
@@ -49,5 +47,74 @@
     Login
   </button>
   <a href="http://localhost:4200/register">reg</a>
+  </form>
+</div> -->
+
+<div class="min-h-screen flex justify-center items-center bg-[#f8f9fa]">
+  <form
+    class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-gray-200"
+    (ngSubmit)="onLogin()"
+  >
+    <!-- Title -->
+    <h2 class="text-center text-2xl font-bold text-[#222831] mb-6">Login</h2>
+
+    <!-- Email Input -->
+    <div class="relative z-0 w-full mb-6 group">
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
+        placeholder=" "
+        required
+        [(ngModel)]="loginData.username"
+      />
+      <label
+        for="email"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Username
+      </label>
+    </div>
+
+    <!-- Password Input -->
+    <div class="relative z-0 w-full mb-6 group">
+      <input
+        type="password"
+        name="password"
+        id="password"
+        class="block py-3 px-0 w-full text-sm text-gray-700 bg-transparent border-b-2 border-gray-300 focus:border-[#00ADB5] focus:outline-none peer"
+        placeholder=" "
+        required
+        [(ngModel)]="loginData.password"
+      />
+      <label
+        for="password"
+        class="peer-focus:font-medium absolute text-sm text-[#393E46] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-[#00ADB5] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >
+        Password
+      </label>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full py-3 text-sm font-medium text-white bg-[#00ADB5] hover:bg-[#008a94] rounded-lg focus:outline-none focus:ring-4 focus:ring-[#71C9CE]"
+    >
+      Login
+    </button>
+
+    <!-- Registration Link -->
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        Don't have an account?
+        <a
+          href="/register"
+          class="text-[#00ADB5] hover:underline hover:text-[#008a94]"
+        >
+          Register
+        </a>
+      </p>
+    </div>
   </form>
 </div>

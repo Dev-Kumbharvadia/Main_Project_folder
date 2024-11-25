@@ -32,7 +32,6 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet("GetUserRolesByID")] //ok
-        [Authorize(Roles = "admin")]
         public ActionResult<ApiResponse<List<string>>> GetUserRoles(Guid userId)
         {
             try
@@ -114,9 +113,6 @@ namespace TodoAPI.Controllers
                 Data = newRole
             });
         }
-
-
-        // DELETE: api/Role/{id}
 
         [HttpPut("UpdateRole")] //ok
         [Authorize(Roles = "admin")]

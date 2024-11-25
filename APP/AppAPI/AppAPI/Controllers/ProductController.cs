@@ -64,7 +64,7 @@ namespace AppAPI.Controllers
 
         // Read Sorted Products with Seller Info
         [HttpGet("Sorted")]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = "buyer,seller")]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
             // Start with the Product query
@@ -109,7 +109,7 @@ namespace AppAPI.Controllers
 
         // GET: api/Product/{id}
         [HttpGet("GetProductById")]
-        [Authorize(Roles = "seller,admin")]
+        [Authorize]
         public async Task<IActionResult> GetProduct(Guid id)
         {
             var product = await _context.Products.FindAsync(id);

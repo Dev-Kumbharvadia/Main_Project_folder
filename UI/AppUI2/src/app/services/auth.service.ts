@@ -29,7 +29,7 @@ export class AuthService {
       environment.API_URl + Constant.API_METHOD.AUTH.REGISTER,{username, password, email});
   }
 
-  onLogut(Id: string): Observable<any> {
+  onLogout(Id: string): Observable<any> {
     return this.http.post<any>(
       environment.API_URl +
         Constant.API_METHOD.AUTH.LOGOUT +
