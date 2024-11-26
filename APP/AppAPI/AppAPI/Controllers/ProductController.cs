@@ -65,6 +65,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("GetSortedProduct")]
+        [Authorize]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
             IQueryable<Product> productQuery;
@@ -159,6 +160,7 @@ namespace AppAPI.Controllers
         }
 
         [HttpGet("getSortedProductsBySellerId")]
+        [Authorize(Roles = "seller")]
         public async Task<IActionResult> GetSortedProductsBySellerId([FromQuery] SieveModel model, Guid SellerId)
         {
             var productQuery = _context.Products
@@ -339,32 +341,8 @@ namespace AppAPI.Controllers
             return Ok(new { message = "Product updated successfully.", product = product });
         }
 
-        // DELETE: api/Product/{id}
-        //[HttpDelete("DeleteProduct")] //ok
-        //public async Task<IActionResult> DeleteProduct(Guid id)
-        //{
-        //    var product = await _context.Products.FindAsync(id);
-
-        //    if (product == null)
-        //    {
-        //        return NotFound(new { message = "Product not found" });
-        //    }
-
-        //    try
-        //    {
-        //        _context.Products.Remove(product);
-        //        await _context.SaveChangesAsync();
-
-        //        return Ok(new { message = "Product deleted successfully" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error occurred while deleting product: {ex.Message}");
-        //        return StatusCode(500, new { message = $"Internal server error, unable to delete product {ex}" });
-        //    }
-        //}
-
     [HttpDelete("DeleteProduct")] //ok
+        [Authorize(Roles = "seller")]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
 

@@ -79,7 +79,8 @@ export class HomeComponent implements OnInit {
     description: string | undefined,
     imageContent: Uint8Array,
     price: number,
-    sellerName: string
+    sellerName: string,
+    stockQuantity: number
   ) {
     var cartQuantity = 1;
     const product: ICartItem = {
@@ -89,7 +90,8 @@ export class HomeComponent implements OnInit {
       imageContent,
       price,
       cartQuantity,
-      sellerName
+      sellerName,
+      stockQuantity
     };
 
     // Pass the product to the service

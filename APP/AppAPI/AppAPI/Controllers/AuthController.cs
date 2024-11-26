@@ -78,6 +78,7 @@ namespace TodoAPI.Controllers
         [Authorize]
         public IActionResult Logout(Guid userId)
         {
+
             try
             {
                 // Find the last audit entry for the user (the most recent login without a logout time)
@@ -121,6 +122,7 @@ namespace TodoAPI.Controllers
         [HttpPost("Login")]
         public ActionResult<ApiResponse<object>> Login([FromBody] UserLoginModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(new ApiResponse<object>

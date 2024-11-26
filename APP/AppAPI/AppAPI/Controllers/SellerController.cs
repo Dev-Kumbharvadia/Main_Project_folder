@@ -1,5 +1,6 @@
 ﻿using AppAPI.Data;
 using AppAPI.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,8 @@ namespace AppAPI.Controllers
             _sieveProcessor = sieveProcessor;
         }
 
-        [HttpGet("AllSellers")]
+        [HttpGet("AllSalesData")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetSalesForAllSellers()
         {
             // Fetch sales data for all sellers including details for each item sold
@@ -59,7 +61,8 @@ namespace AppAPI.Controllers
             });
         }
 
-        [HttpGet("BySeller")]
+        [HttpGet("SalesDataByID")]
+        [Authorize(Roles = "seller")]
         public async Task<IActionResult> GetSalesBySeller(Guid sellerId)
         {
             // Fetch sales data for a specific seller including details for each item sold, with price information

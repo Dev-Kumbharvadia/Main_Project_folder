@@ -23,9 +23,9 @@ export class CartComponent implements OnInit {
   loadAndUpdateCartData() {
     const storedCart = sessionStorage.getItem('cart');
     let cartData = storedCart ? JSON.parse(storedCart) : [];
-
+  
     const updatedCartItems = this.cartService.onCartUpdate();
-
+  
     if (updatedCartItems && updatedCartItems.length > 0) {
       updatedCartItems.forEach((newItem: CartItem) => {
         const existingItem = cartData.find(
@@ -41,13 +41,13 @@ export class CartComponent implements OnInit {
         }
       });
     }
-
+  
     if (cartData.length === 0) {
       console.log('No new items to update in the cart.');
     } else {
       sessionStorage.setItem('cart', JSON.stringify(cartData));
       this.cartItems = [];
-
+  
       cartData.forEach(
         (cartItem: { productId: string; cartQuantity: number }) => {
           this.productService
@@ -62,21 +62,30 @@ export class CartComponent implements OnInit {
       );
     }
   }
-
-  getProductById(Id: string) {
-    this.productService.getProductById(Id).subscribe((res: any) => {
-      this.cartItems.push(res);
-    });
-  }
-
+  
   addItem(Id: string) {
     const product = this.cartItems.find((item) => item.productId === Id);
     if (product) {
+      const cartQuantity = product.cartQuantity;
+      const maxQuantity = product.stockQuantity;
+  
+      console.log(product)
+
+      if (maxQuantity <= 0) {
+        alert('This product is out of stock.');
+        return;
+      }
+  
+      if (cartQuantity >= maxQuantity) {
+        alert('No more stock available.');
+        return;
+      }
+  
       product.cartQuantity += 1;
       this.updateSessionStorage();
     }
   }
-
+  
   subItem(Id: string) {
     const product = this.cartItems.find((item) => item.productId === Id);
     if (product) {
@@ -86,38 +95,38 @@ export class CartComponent implements OnInit {
       }
     }
   }
-
+  
   private updateSessionStorage() {
     const cartData = this.cartItems.map((item) => ({
       productId: item.productId,
       cartQuantity: item.cartQuantity,
     }));
-
+  
     sessionStorage.setItem('cart', JSON.stringify(cartData));
   }
-
+  
   removeItem(Id: string) {
     this.cartItems = this.cartItems.filter((item) => item.productId !== Id);
-
+  
     const storedCart = sessionStorage.getItem('cart');
-
+  
     let cartData = storedCart ? JSON.parse(storedCart) : [];
-
+  
     cartData = cartData.filter((item: any) => item.productId !== Id);
-
+  
     sessionStorage.setItem('cart', JSON.stringify(cartData));
   }
-
+  
   grandTotal() {
-    var grandTotal = 0.0;
-
+    let grandTotal = 0.0;
+  
     this.cartItems.forEach((element) => {
       grandTotal += element.cartQuantity * element.price;
     });
-
+  
     return grandTotal;
   }
-
+  
   makePurchase(productId: string, buyerId: string, quantity: number) {
     const purchase = new MakePurchase(productId, buyerId, quantity);
   
@@ -130,7 +139,7 @@ export class CartComponent implements OnInit {
       }
     );
   }
-
+  
   checkout() {
     const userId = sessionStorage.getItem('userId');
     if (!userId) {
@@ -151,11 +160,11 @@ export class CartComponent implements OnInit {
   
       this.makePurchase(item.productId, userId, item.cartQuantity);
     });
-
+  
     this.cartClear();
   }
-
-  cartClear(){
+  
+  cartClear() {
     this.cartItems = [];
     sessionStorage.removeItem('cart');
   }

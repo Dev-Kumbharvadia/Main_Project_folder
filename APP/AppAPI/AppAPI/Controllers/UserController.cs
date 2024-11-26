@@ -228,7 +228,6 @@ namespace TodoAPI.Controllers
             return Ok(user);
         }
 
-
         [HttpGet("GetUserByID")] //ok
         [Authorize]
         public async Task<ActionResult<IEnumerable<User>>> GetUserByID(Guid Id)

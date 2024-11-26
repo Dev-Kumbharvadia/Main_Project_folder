@@ -65,6 +65,7 @@ export class CartItem {
   price: number = 0;
   cartQuantity: number = 0;
   sellerName: string = '';
+  stockQuantity: number = 0 ;
 }
 
 export class LoginModel {

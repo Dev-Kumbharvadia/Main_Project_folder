@@ -39,9 +39,9 @@ namespace AppAPI.Controllers
         }
 
         [HttpPost("MakePurchase")]
+        [Authorize(Roles = "buyer")]
         public async Task<IActionResult> MakePurchase(PurchaseDTO purchase)
         {
-            // Step 1: Validate the input
             if (purchase == null)
                 return BadRequest("Purchase details are required.");
 
@@ -51,45 +51,38 @@ namespace AppAPI.Controllers
             if (purchase.ProductId == Guid.Empty || purchase.BuyerId == Guid.Empty)
                 return BadRequest("Invalid Product or Buyer ID.");
 
-            // Step 2: Fetch the product
             var product = await _context.Products
                 .FirstOrDefaultAsync(p => p.ProductId == purchase.ProductId);
 
             if (product == null)
                 return NotFound("Product not found.");
 
-            // Step 3: Check stock availability
             if (product.StockQuantity < purchase.Quantity)
                 return BadRequest("Not enough stock available.");
 
-            // Step 4: Calculate the total amount
             double totalAmount = product.Price * purchase.Quantity;
 
-            // Step 5: Verify if the buyer exists
             var buyer = await _context.Users.FirstOrDefaultAsync(u => u.UserId == purchase.BuyerId);
             if (buyer == null)
                 return NotFound("Buyer not found.");
 
-            // Step 6: Create the transaction history
             var transactionHistory = new TransactionHistory
             {
                 TransactionId = Guid.NewGuid(),
                 ProductId = purchase.ProductId,
                 BuyerId = purchase.BuyerId,
-                SellerId = product.SellerId, // Set the seller from the product
+                SellerId = product.SellerId,
                 Quantity = purchase.Quantity,
                 TotalAmount = totalAmount,
                 TransactionDate = DateTime.UtcNow,
-                Product = product, // Navigation property
-                Buyer = buyer,     // Navigation property
+                Product = product,
+                Buyer = buyer,  
                 Seller = await _context.Users.FirstOrDefaultAsync(u => u.UserId == product.SellerId) ?? throw new InvalidOperationException("Seller not found.")
             };
 
-            // Step 7: Update the product stock
             product.StockQuantity -= purchase.Quantity;
 
-            // Step 8: Save changes to the database
-            using var transaction = await _context.Database.BeginTransactionAsync(); // Ensure atomicity
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 _context.TransactionHistories.Add(transactionHistory);
@@ -104,7 +97,6 @@ namespace AppAPI.Controllers
                 return StatusCode(500, $"An error occurred while processing the purchase: {ex.Message}");
             }
 
-            // Step 9: Return a success response with transaction details
             return Ok(new
             {
                 Message = "Purchase successful.",

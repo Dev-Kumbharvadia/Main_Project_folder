@@ -60,6 +60,7 @@ export interface ICartItem {
   price: number;
   cartQuantity: number;
   sellerName: string;
+  stockQuantity: number;
 }
 
 export interface ILoginModel {

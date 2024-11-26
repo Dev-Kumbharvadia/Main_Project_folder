@@ -30,8 +30,8 @@ export const Constant = {
             DELETE: '/api/Role/DeleteRole',
         },
         SELLER: {
-            ALL_SELLERS: '/api/Seller/AllSellers',
-            BY_ID: '/api/Seller/BySeller',
+            ALL_SELLERS: '/api/Seller/AllSalesData',
+            BY_ID: '/api/Seller/SalesDataByID',
         },
         TRANSACTION: {
             GET_ALL: '/api/Transaction/getAllTransaction',
