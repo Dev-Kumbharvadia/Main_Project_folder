@@ -5,19 +5,19 @@
         <!-- Retailer Info -->
         <div class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
             <p class="text-lg text-gray-700">Welcome, 
-                <span class="font-bold text-[#00ADB5]">{{ retailerName }}</span>
+                <span class="font-bold text-[#00ADB5]">{{ this.salesData.data.username }}</span>
             </p>
         </div>
 
         <!-- Statistics -->
         <div class="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
             <div class="mb-4">
-                <p class="text-sm text-gray-600">Total Items Sold:</p>
-                <p class="text-2xl font-semibold text-[#00ADB5]">{{ totalItemsSold }}</p>
+                <p class="text-sm text-gray-600">Total Items Sold: </p>
+                <p class="text-2xl font-semibold text-[#00ADB5]">{{ this.salesData.data.totalProductsSold }}</p>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Total Money Earned:</p>
-                <p class="text-2xl font-semibold text-[#00ADB5]">{{ totalMoneyEarned | currency }}</p>
+                <p class="text-sm text-gray-600">Total Money Earned: </p>
+                <p class="text-2xl font-semibold text-[#00ADB5]">{{ this.salesData.data.totalAmountSold | currency}}</p>
             </div>
         </div>
 
@@ -46,12 +46,10 @@
                     id="search"
                     placeholder="Search for products..."
                     class="block w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
-                    [(ngModel)]="searchQuery"
                 />
             </div>
 
-            <!-- Filter Dropdown -->
-            <div>
+            <!-- <div>
                 <select
                     id="filter"
                     class="block w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
@@ -62,7 +60,7 @@
                     <option value="category">By Category</option>
                     <option value="price">By Price</option>
                 </select>
-            </div>
+            </div> -->
         </div>
 
         <!-- Table -->
@@ -71,23 +69,22 @@
                 <thead class="bg-[#EEEEEE]">
                     <tr>
                         <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Product Name</th>
-                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Category</th>
+                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Times Sold</th>
                         <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Price</th>
-                        <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Quantity Sold</th>
                         <th class="px-6 py-3 border border-gray-300 font-medium text-[#393E46]">Total Earned</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @for (product of products; track $index) {
                     <tr
-                        *ngFor="let product of filteredProducts()"
                         class="odd:bg-white even:bg-gray-50 hover:bg-gray-100"
                     >
                         <td class="px-6 py-3 border border-gray-300">{{ product.productName }}</td>
-                        <td class="px-6 py-3 border border-gray-300">{{ product.category }}</td>
+                        <td class="px-6 py-3 border border-gray-300">{{ product.totalQuantitySold }}</td>
                         <td class="px-6 py-3 border border-gray-300">{{ product.price | currency }}</td>
-                        <td class="px-6 py-3 border border-gray-300">{{ product.quantitySold }}</td>
-                        <td class="px-6 py-3 border border-gray-300 text-[#00ADB5] font-semibold">{{ product.totalEarned | currency }}</td>
+                        <td class="px-6 py-3 border border-gray-300 text-[#00ADB5] font-semibold">{{ product.totalAmountSold | currency }}</td>
                     </tr>
+                }
                 </tbody>
             </table>
         </div>

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { ENVIRONMENT_INITIALIZER, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '../../environment/environment.development';
@@ -24,5 +24,9 @@ export class MiscService {
   getUserRoles():  Observable<any>{
     var Id: string = sessionStorage.getItem('userId') ?? '';
     return this.http.get(environment.API_URl + Constant.API_METHOD.ROLE.GET_BY_ID + "?userId=" + `${Id}`);
+  }
+
+  loadSalesData(){
+    return this.http.get(environment.API_URl + Constant.API_METHOD.SELLER.BY_ID + `?sellerId=${sessionStorage.getItem('userId')}`);
   }
 }

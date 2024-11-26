@@ -46,10 +46,10 @@ namespace AppAPI.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageContent = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    StockQuantity = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     SellerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
                 constraints: table =>
                 {
@@ -136,6 +136,7 @@ namespace AppAPI.Migrations
                     TransactionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BuyerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SellerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<double>(type: "float", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -155,6 +156,12 @@ namespace AppAPI.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TransactionHistories_Users_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -176,6 +183,11 @@ namespace AppAPI.Migrations
                 name: "IX_TransactionHistories_ProductId",
                 table: "TransactionHistories",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionHistories_SellerId",
+                table: "TransactionHistories",
+                column: "SellerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAudits_UserId",

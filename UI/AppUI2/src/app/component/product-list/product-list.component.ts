@@ -12,18 +12,41 @@ import { filter } from 'rxjs';
   styleUrl: './product-list.component.css',
 })
 export class ProductListComponent implements OnInit {
+
   products: Product[] = [];
   router = inject(Router);
   productService = inject(ProductService);
   filter = new Filter();
+currentPage: any;
+totalPages: any;
 
   ngOnInit(): void {
-    this.getSortedProducts();
+    this.getSortedProductsBySellerId();
   }
 
-  getSortedProducts() {
-    this.productService.getSortedProducts(this.filter).subscribe((res: any) => {
-      this.products = res;
+  nextPage() {
+    this.filter.Page+=1;
+    this.productService.getSortedProductsBySellerId(this.filter).subscribe((res: any) => {
+      this.products = res.data.result;
+      this.currentPage = res.data.currentPage;
+      this.totalPages = res.data.totalPages;
+    });
+    }
+
+    previousPage() {
+      this.filter.Page-=1;
+      this.productService.getSortedProductsBySellerId(this.filter).subscribe((res: any) => {
+        this.products = res.data.result;
+        this.currentPage = res.data.currentPage;
+        this.totalPages = res.data.totalPages;
+      });
+      }
+
+      getSortedProductsBySellerId() {
+    this.productService.getSortedProductsBySellerId(this.filter).subscribe((res: any) => {
+      this.products = res.data.result;
+      this.currentPage = res.data.currentPage;
+      this.totalPages = res.data.totalPages;
     });
   }
 

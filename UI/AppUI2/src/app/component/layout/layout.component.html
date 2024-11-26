@@ -112,16 +112,7 @@
             >Retailer Stats</a
           >
         </li>
-      } @if (userRoles.includes('admin')) {
-        <li>
-          <a
-            routerLink="manage-roles"
-            routerLinkActive="active"
-            class="block py-2 px-3 md:p-0 text-[#EEEEEE] rounded hover:bg-[#393E46] md:hover:bg-transparent md:hover:text-[#00ADB5]"
-            >Manage Roles</a
-          >
-        </li>
-        }
+      }
         <li>
           <button (click)="onLogout()" class="text-[#dd3d53]">Logout</button>
         </li>

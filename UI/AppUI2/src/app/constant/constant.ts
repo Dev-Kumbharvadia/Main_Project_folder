@@ -14,7 +14,8 @@ export const Constant = {
         },
         PRODUCT: {
             GET_ALL: '/api/Product/GetAllProducts',
-            GET_SORTED: '/api/Product/Sorted',
+            GET_SORTED: '/api/Product/GetSortedProduct',
+            GET_SORTED_BY_SELLER_ID: '/api/Product/getSortedProductsBySellerId',
             GET_BY_ID: '/api/Product/GetProductById',
             ADD: '/api/Product/AddProduct',
             UPDATE: '/api/Product/UpdateProduct',
@@ -27,6 +28,10 @@ export const Constant = {
             REMOVE: '/api/Role/RemoveRole',
             UPDATE: '/api/Role/UpdateRole',
             DELETE: '/api/Role/DeleteRole',
+        },
+        SELLER: {
+            ALL_SELLERS: '/api/Seller/AllSellers',
+            BY_ID: '/api/Seller/BySeller',
         },
         TRANSACTION: {
             GET_ALL: '/api/Transaction/getAllTransaction',

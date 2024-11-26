@@ -54,7 +54,7 @@ export class Filter {
   Filters: string = '';
   Sorts: string = '';
   Page: number = 1;
-  PageSize: number = 20;
+  PageSize: number = 15;
 }
 
 export class CartItem {
@@ -117,4 +117,29 @@ export class MakePurchase {
     this.buyerId = buyerId;
     this.quantity = quantity;
   }
+}
+
+
+export class SalesData {
+  message: string = '';
+  data: {
+    SellerId: string;
+    username: string;
+    Email: string;
+    totalAmountSold: number;
+    totalProductsSold: number;
+    ItemsSold: {
+      ProductId: string;
+      ProductName: string;
+      TotalQuantitySold: number;
+      TotalAmountSold: number;
+    }[];
+  } = {
+    SellerId: '',
+    username: '',
+    Email: '',
+    totalAmountSold: 0,
+    totalProductsSold: 0,
+    ItemsSold: []
+  };
 }

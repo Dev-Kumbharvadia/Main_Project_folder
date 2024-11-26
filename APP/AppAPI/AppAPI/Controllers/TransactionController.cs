@@ -11,7 +11,6 @@ namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class TransactionController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -40,54 +39,88 @@ namespace AppAPI.Controllers
         }
 
         [HttpPost("MakePurchase")]
-        [Authorize(Roles="buyer")]
         public async Task<IActionResult> MakePurchase(PurchaseDTO purchase)
         {
-            // Validate the input
-            if (purchase == null || purchase.Quantity <= 0 || purchase.ProductId == Guid.Empty || purchase.BuyerId == Guid.Empty)
-            {
-                return BadRequest("Invalid purchase details.");
-            }
+            // Step 1: Validate the input
+            if (purchase == null)
+                return BadRequest("Purchase details are required.");
 
+            if (purchase.Quantity <= 0)
+                return BadRequest("Quantity must be greater than zero.");
+
+            if (purchase.ProductId == Guid.Empty || purchase.BuyerId == Guid.Empty)
+                return BadRequest("Invalid Product or Buyer ID.");
+
+            // Step 2: Fetch the product
             var product = await _context.Products
-                .Where(p => p.ProductId == purchase.ProductId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(p => p.ProductId == purchase.ProductId);
 
             if (product == null)
-            {
                 return NotFound("Product not found.");
-            }
 
+            // Step 3: Check stock availability
             if (product.StockQuantity < purchase.Quantity)
-            {
                 return BadRequest("Not enough stock available.");
-            }
 
+            // Step 4: Calculate the total amount
             double totalAmount = product.Price * purchase.Quantity;
 
+            // Step 5: Verify if the buyer exists
+            var buyer = await _context.Users.FirstOrDefaultAsync(u => u.UserId == purchase.BuyerId);
+            if (buyer == null)
+                return NotFound("Buyer not found.");
+
+            // Step 6: Create the transaction history
             var transactionHistory = new TransactionHistory
             {
                 TransactionId = Guid.NewGuid(),
                 ProductId = purchase.ProductId,
                 BuyerId = purchase.BuyerId,
+                SellerId = product.SellerId, // Set the seller from the product
                 Quantity = purchase.Quantity,
                 TotalAmount = totalAmount,
-                TransactionDate = DateTime.UtcNow
+                TransactionDate = DateTime.UtcNow,
+                Product = product, // Navigation property
+                Buyer = buyer,     // Navigation property
+                Seller = await _context.Users.FirstOrDefaultAsync(u => u.UserId == product.SellerId) ?? throw new InvalidOperationException("Seller not found.")
             };
 
-            // Step 5: Save the transaction to the database
-            _context.TransactionHistories.Add(transactionHistory);
-
-            // Step 6: Update the product stock
+            // Step 7: Update the product stock
             product.StockQuantity -= purchase.Quantity;
-            _context.Products.Update(product);
 
-            // Step 7: Save changes to the database
-            await _context.SaveChangesAsync();
+            // Step 8: Save changes to the database
+            using var transaction = await _context.Database.BeginTransactionAsync(); // Ensure atomicity
+            try
+            {
+                _context.TransactionHistories.Add(transactionHistory);
+                _context.Products.Update(product);
 
-            // Step 8: Return a success response with transaction details
-            return Ok(new { Message = "Purchase successful.", TransactionId = transactionHistory.TransactionId });
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, $"An error occurred while processing the purchase: {ex.Message}");
+            }
+
+            // Step 9: Return a success response with transaction details
+            return Ok(new
+            {
+                Message = "Purchase successful.",
+                Transaction = new
+                {
+                    transactionHistory.TransactionId,
+                    transactionHistory.TransactionDate,
+                    Product = new { product.ProductId, product.ProductName, product.Price },
+                    Buyer = new { buyer.UserId, buyer.Username },
+                    Seller = new { transactionHistory.Seller.UserId, transactionHistory.Seller.Username },
+                    transactionHistory.Quantity,
+                    transactionHistory.TotalAmount
+                }
+            });
         }
+
 
 
         [HttpGet("getTransactionHistory")]

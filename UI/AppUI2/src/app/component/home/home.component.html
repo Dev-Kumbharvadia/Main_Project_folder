@@ -12,6 +12,7 @@
           id="table-search-users"
           class="block w-96 py-2 pl-10 text-sm text-[#222831] bg-[#EEEEEE] border border-[#393E46] rounded-lg shadow-sm focus:ring-[#00ADB5] focus:border-[#00ADB5]"
           placeholder="Search for users..."
+          [(ngModel)]="searchValue"
         />
       </div>
 
@@ -19,6 +20,7 @@
       <button
         type="button"
         class="px-4 py-2 text-white bg-[#00ADB5] rounded-lg hover:bg-[#0094a4] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
+        (click)="searchProduct()"
       >
         Search
       </button>
@@ -27,7 +29,7 @@
 </div>
 
 <div class="notice-container mx-auto">
-  @for (product of products; track $index) {
+  @for (product of products; track $index){
 
   <div
     class="bg-white rounded-lg shadow-xl overflow-hidden mx-3 mb-10 hover:shadow-2xl transition-shadow duration-300"
@@ -90,7 +92,6 @@
   </div>
   }
 </div>
-
 <div class="clear-both pt-4">
   <div
     class="flex items-center justify-center mt-6 space-x-2 mx-auto max-w-fit"
@@ -99,43 +100,26 @@
     <button
       class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] disabled:opacity-50 disabled:cursor-not-allowed"
       type="button"
-      disabled
+      [disabled]="!(currentPage>1)"
+      (click)="previousPage()"
     >
       Previous
     </button>
 
     <!-- Page Numbers -->
     <button
-      class="px-4 py-2 bg-[#00ADB5] text-white rounded-md hover:bg-[#0094a4] focus:outline-none focus:ring-2 focus:ring-[#00ADB5] transition-colors duration-300"
-      type="button"
-    >
-      1
-    </button>
-    <button
       class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
       type="button"
     >
-      2
-    </button>
-    <button
-      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
-      type="button"
-    >
-      3
-    </button>
-    <span class="px-2 py-1 text-[#393E46]">...</span>
-    <button
-      class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#00ADB5]"
-      type="button"
-    >
-      10
+      {{ currentPage }} / {{ totalPages }}
     </button>
 
     <!-- Next Button -->
     <button
       class="px-4 py-2 bg-[#EEEEEE] text-[#393E46] rounded-md hover:bg-[#F3F4F6] disabled:opacity-50 disabled:cursor-not-allowed"
       type="button"
-      disabled
+      [disabled]="!(currentPage<totalPages)"
+      (click)="nextPage()"
     >
       Next
     </button>

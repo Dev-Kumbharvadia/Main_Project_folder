@@ -29,7 +29,9 @@ namespace AppAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -49,10 +51,14 @@ namespace AppAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("StockQuantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.HasKey("ProductId");
 
@@ -120,6 +126,9 @@ namespace AppAPI.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("SellerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("TotalAmount")
                         .HasColumnType("float");
 
@@ -131,6 +140,8 @@ namespace AppAPI.Migrations
                     b.HasIndex("BuyerId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("TransactionHistories");
                 });
@@ -222,17 +233,29 @@ namespace AppAPI.Migrations
 
             modelBuilder.Entity("AppAPI.Models.Domain.TransactionHistory", b =>
                 {
-                    b.HasOne("AppAPI.Models.Domain.User", null)
+                    b.HasOne("AppAPI.Models.Domain.User", "Buyer")
                         .WithMany("Transactions")
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppAPI.Models.Domain.Product", null)
-                        .WithMany()
+                    b.HasOne("AppAPI.Models.Domain.Product", "Product")
+                        .WithMany("Transactions")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("AppAPI.Models.Domain.User", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("AppAPI.Models.Domain.UserAudit", b =>
@@ -263,6 +286,11 @@ namespace AppAPI.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AppAPI.Models.Domain.Product", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("AppAPI.Models.Domain.Role", b =>

@@ -12,7 +12,6 @@ import { ProductListComponent } from './component/product-list/product-list.comp
 import { UpdateProductComponent } from './component/update-product/update-product.component';
 import { authGuard } from './guard/auth.guard';
 import { RetailerStatsComponent } from './component/retailer-stats/retailer-stats.component';
-import { ManageRolesComponent } from './component/manage-roles/manage-roles.component';
 
 export const routes: Routes = [
   {
@@ -79,10 +78,6 @@ export const routes: Routes = [
       {
         path: 'stats',
         component: RetailerStatsComponent
-      },
-      {
-        path: 'manage-roles',
-        component: ManageRolesComponent
       }
     ]
   },

@@ -22,51 +22,85 @@ namespace AppAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Define relationships with cascading delete
+            // User to Product Relationship
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Products)
                 .WithOne(p => p.Seller)
                 .HasForeignKey(p => p.SellerId)
-                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // User to RefreshToken Relationship
             modelBuilder.Entity<User>()
                 .HasMany(u => u.RefreshTokens)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // User to UserAudit Relationship
             modelBuilder.Entity<User>()
                 .HasMany(u => u.UserAudits)
                 .WithOne(a => a.User)
                 .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // User to TransactionHistory Relationship (as Buyer)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Transactions)
                 .WithOne()
                 .HasForeignKey(t => t.BuyerId)
-                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // TransactionHistory to Product Relationship
             modelBuilder.Entity<TransactionHistory>()
-                .HasOne<Product>()
-                .WithMany()
+                .HasOne(t => t.Product)
+                .WithMany(p => p.Transactions)
                 .HasForeignKey(t => t.ProductId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent delete if referenced
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletion
 
+            // TransactionHistory to Buyer (User) Relationship
+            modelBuilder.Entity<TransactionHistory>()
+                .HasOne(t => t.Buyer)
+                .WithMany(u => u.Transactions)
+                .HasForeignKey(t => t.BuyerId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete transactions if the buyer is deleted
+
+            // TransactionHistory to Seller (User) Relationship
+            modelBuilder.Entity<TransactionHistory>()
+                .HasOne(t => t.Seller)
+                .WithMany() // No need to track Seller's transaction history separately in this case
+                .HasForeignKey(t => t.SellerId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletion
+
+            // Composite Key for UserRole
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 
+            // UserRole to User Relationship
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
                 .WithMany(u => u.UserRoles)
                 .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete for UserRoles
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // UserRole to Role Relationship
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(ur => ur.RoleId)
-                .OnDelete(DeleteBehavior.Cascade); // Enable cascade delete for UserRoles
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Default Values for Product
+            modelBuilder.Entity<Product>()
+                .Property(p => p.StockQuantity)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

@@ -5,11 +5,12 @@ import { ProductService } from '../../services/product.service';
 import { DatePipe } from '@angular/common';
 import { ICartItem } from '../../model/interface';
 import { CartService } from '../../services/cart.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -19,12 +20,43 @@ export class HomeComponent implements OnInit {
   productService = inject(ProductService);
   cartService = inject(CartService);
   filter = new Filter();
+  currentPage: number = 0;
+  totalPages: number = 0;
+  searchValue: string = '';
 
   ngOnInit(): void {
     this.getSortedProducts();
     this.products = this.productService.productsList;
     this.cartService.cartItems = [];
   }
+
+  nextPage() {
+    this.filter.Page+=1;
+    this.productService.getSortedProducts(this.filter).subscribe((res: any) => {
+      this.products = res.data.result;
+      this.currentPage = res.data.currentPage;
+      this.totalPages = res.data.totalPages;
+    });
+    }
+
+    previousPage() {
+      this.filter.Page-=1;
+      this.productService.getSortedProducts(this.filter).subscribe((res: any) => {
+        this.products = res.data.result;
+        this.currentPage = res.data.currentPage;
+        this.totalPages = res.data.totalPages;
+      });
+      }
+
+      searchProduct() {
+        this.filter.Filters = this.searchValue;
+        console.log(this.searchValue)
+        this.productService.getSortedProducts(this.filter).subscribe((res: any) => {
+          this.products = res.data.result;
+          this.currentPage = res.data.currentPage;
+          this.totalPages = res.data.totalPages;
+        });
+        }
 
   getAllProducts(){
     this.productService.getAllProducts().subscribe((res: any)=>{
@@ -34,7 +66,10 @@ export class HomeComponent implements OnInit {
 
   getSortedProducts(){
     this.productService.getSortedProducts(this.filter).subscribe((res: any)=>{
-      this.products = res;
+      console.log(res.data.result);
+      this.products = res.data.result;
+      this.currentPage = res.data.currentPage;
+      this.totalPages = res.data.totalPages;
     })
   }
 

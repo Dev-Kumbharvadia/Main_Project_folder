@@ -25,5 +25,7 @@
             public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
             public User Seller { get; set; }
-        }
+
+        public ICollection<TransactionHistory> Transactions { get; set; } = new List<TransactionHistory>();
+    }
     }

@@ -22,6 +22,30 @@ export class ProductService {
     return this.http.get<any>(environment.API_URl + Constant.API_METHOD.PRODUCT.GET_ALL);
   }
 
+  getSortedProductsBySellerId(filter: IFilter): Observable<any> {
+    const params = new URLSearchParams();
+
+    if (filter.Filters) {
+      params.append('Filters', filter.Filters);
+    }
+
+    if (filter.Sorts) {
+      params.append('Sorts', filter.Sorts);
+    }
+
+    if (filter.Page !== undefined) {
+      params.append('Page', filter.Page.toString());
+    }
+
+    if (filter.PageSize !== undefined) {
+      params.append('PageSize', filter.PageSize.toString());
+    }
+
+    const url = `${environment.API_URl}${Constant.API_METHOD.PRODUCT.GET_SORTED_BY_SELLER_ID}?${params.toString()}`;
+
+    return this.http.get<any>(url + `&SellerId=${sessionStorage.getItem('userId')}`);
+  }
+
   getSortedProducts(filter: IFilter): Observable<any> {
     const params = new URLSearchParams();
 

@@ -13,6 +13,10 @@ export class AdminService {
 
   constructor() { }
 
+  rewriteRoles(roles: string[]): Observable<any>{
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD.ADMIN.REWRITE_ROLES + '?userId=' + `${sessionStorage.getItem('userId')}`,{roles})
+  }
+
   assignRole(userId: string, roleId: string): Observable<any>{
     return this.http.post<any>(environment.API_URl + Constant.API_METHOD.USER.ASSIGN_ROLE+"?userId="+`${userId}`+"&roleId="+`${roleId}`,{});
   }

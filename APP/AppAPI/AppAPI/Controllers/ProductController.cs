@@ -30,7 +30,6 @@ namespace AppAPI.Controllers
             _sieveProcessor = sieveProcessor;
         }
 
-        [Authorize(Roles = "admin")]
         [HttpGet("GetAllProducts")] //ok
         public async Task<IActionResult> GetAllProduct()
         {
@@ -67,48 +66,50 @@ namespace AppAPI.Controllers
 
 
 
-        [HttpGet("Sorted")]
+        [HttpGet("GetSortedProduct")]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
             var productQuery = _context.Products
                 .Include(p => p.Seller)
                 .AsQueryable();
 
+            // Apply filtering and sorting using Sieve
             productQuery = _sieveProcessor.Apply(model, productQuery);
 
-            int totalCount;
-
-            if(model.Page == null || model.PageSize == null)
+            // Ensure default values for paging
+            if (model.Page == null || model.PageSize == null)
             {
                 model.Page = 1;
                 model.PageSize = 5;
             }
 
-            if (model.Sorts == null && model.Filters == null)
-            {
-                totalCount = await _context.Products.CountAsync();
-            }
-            else
-            {
-                totalCount = await productQuery.CountAsync();
-            }
+            int totalCount = model.Sorts == null && model.Filters == null
+                ? await _context.Products.CountAsync()
+                : await productQuery.CountAsync();
 
-            var totalPages = (int)Math.Ceiling((double)(totalCount / model.PageSize));
+            // Fix the totalPages calculation
+            var totalPages = (int)Math.Ceiling((double)totalCount / model.PageSize.Value);
 
+            // Handle page and pageSize defaults
+            
             int page = model.Page.HasValue ? model.Page.Value : 1;
             int pageSize = model.PageSize.HasValue ? model.PageSize.Value : 10;
 
+            // Apply paging
             var products = await productQuery
-                .Skip((page - 1) * pageSize)
+                .OrderBy(p => p.ProductId) // Ensure stable ordering
+                .Skip(0)
                 .Take(pageSize)
                 .ToListAsync();
 
 
+            // Handle empty results
             if (products == null || !products.Any())
             {
                 return NotFound(new { message = "No Products found." });
             }
 
+            // Format the result
             var result = products.Select(p => new
             {
                 p.ProductId,
@@ -127,6 +128,7 @@ namespace AppAPI.Controllers
                 }
             });
 
+            // Return the response
             return Ok(new ApiResponse<object>
             {
                 Message = "Products retrieved successfully",
@@ -134,8 +136,85 @@ namespace AppAPI.Controllers
                 Data = new
                 {
                     result,
-                    TotalPages = totalPages,
-                    currentPage = model.Page
+                    totalPages = totalPages,
+                    currentPage = page
+                }
+            });
+        }
+
+        [HttpGet("getSortedProductsBySellerId")]
+        public async Task<IActionResult> GetSortedProductsBySellerId([FromQuery] SieveModel model, Guid SellerId)
+        {
+            var productQuery = _context.Products
+                .Include(p => p.Seller)
+                .Where(p => p.SellerId == SellerId)
+                .AsQueryable();
+
+            // Apply filtering and sorting using Sieve
+            productQuery = _sieveProcessor.Apply(model, productQuery);
+
+            // Ensure default values for paging
+            if (model.Page == null || model.PageSize == null)
+            {
+                model.Page = 1;
+                model.PageSize = 5;
+            }
+
+            int totalCount = model.Sorts == null && model.Filters == null
+                ? await _context.Products.CountAsync()
+                : await productQuery.CountAsync();
+
+            // Fix the totalPages calculation
+            var totalPages = (int)Math.Ceiling((double)totalCount / model.PageSize.Value);
+
+            // Handle page and pageSize defaults
+
+            int page = model.Page.HasValue ? model.Page.Value : 1;
+            int pageSize = model.PageSize.HasValue ? model.PageSize.Value : 10;
+
+            // Apply paging
+            var products = await productQuery
+                .OrderBy(p => p.ProductId) // Ensure stable ordering
+                .Skip(0)
+                .Take(pageSize)
+                .ToListAsync();
+
+
+            // Handle empty results
+            if (products == null || !products.Any())
+            {
+                return NotFound(new { message = "No Products found." });
+            }
+
+            // Format the result
+            var result = products.Select(p => new
+            {
+                p.ProductId,
+                p.ProductName,
+                p.Description,
+                p.ImageContent,
+                p.Price,
+                p.StockQuantity,
+                p.CreatedAt,
+                p.UpdatedAt,
+                Seller = new
+                {
+                    p.Seller.UserId,
+                    p.Seller.Username,
+                    p.Seller.Email
+                }
+            });
+
+            // Return the response
+            return Ok(new ApiResponse<object>
+            {
+                Message = "Products retrieved successfully",
+                Success = true,
+                Data = new
+                {
+                    result,
+                    totalPages = totalPages,
+                    currentPage = page
                 }
             });
         }
