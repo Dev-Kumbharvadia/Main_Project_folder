@@ -70,7 +70,6 @@ namespace TodoAPI.Controllers
 
         // POST: api/Role
         [HttpPost("AddRole")] //ok
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult<ApiResponse<Role>>> AddRole(RoleDTO role)
         {
             if (role == null)

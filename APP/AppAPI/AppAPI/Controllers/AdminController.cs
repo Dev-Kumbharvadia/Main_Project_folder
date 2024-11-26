@@ -9,7 +9,6 @@ namespace TodoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

@@ -22,6 +22,20 @@ namespace AppAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AppAPI.Models.Domain.DeletedProducts", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeletedProducts");
+                });
+
             modelBuilder.Entity("AppAPI.Models.Domain.Product", b =>
                 {
                     b.Property<Guid>("ProductId")

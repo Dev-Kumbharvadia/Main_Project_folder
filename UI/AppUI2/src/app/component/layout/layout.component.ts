@@ -23,7 +23,7 @@ export class LayoutComponent implements OnInit {
 
   getUserRoles() {
     this.miscService.getUserRoles().subscribe((res: any) => {
-      this.userRoles = res.data;
+      this.userRoles = res.data;  
     });
   }
 

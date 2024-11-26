@@ -17,6 +17,7 @@ namespace AppAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserAudit> UserAudits { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<DeletedProducts> DeletedProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,7 +56,7 @@ namespace AppAPI.Data
                 .HasOne(t => t.Product)
                 .WithMany(p => p.Transactions)
                 .HasForeignKey(t => t.ProductId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletion
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // TransactionHistory to Buyer (User) Relationship
             modelBuilder.Entity<TransactionHistory>()

@@ -64,14 +64,30 @@ namespace AppAPI.Controllers
             return Ok(result);
         }
 
-
-
         [HttpGet("GetSortedProduct")]
         public async Task<IActionResult> GetSortedProduct([FromQuery] SieveModel model)
         {
-            var productQuery = _context.Products
-                .Include(p => p.Seller)
-                .AsQueryable();
+            IQueryable<Product> productQuery;
+
+            if (model.Filters == null)
+            {
+                // If no filters are provided, fetch all products and include Seller details
+                productQuery = _context.Products
+                    .Include(p => p.Seller)
+                    .AsQueryable()
+                    .Where(p => !_context.DeletedProducts
+                        .Any(dp => dp.ProductId == p.ProductId));
+            }
+            else
+            {
+                // If filters are provided, apply filter for product name containing the filter text
+                productQuery = _context.Products
+                    .Include(p => p.Seller)
+                    .Where(p => p.ProductName.Contains(model.Filters))
+                    .Where(p => !_context.DeletedProducts
+                        .Any(dp => dp.ProductId == p.ProductId))
+                    .AsQueryable();
+            }
 
             // Apply filtering and sorting using Sieve
             productQuery = _sieveProcessor.Apply(model, productQuery);
@@ -148,6 +164,8 @@ namespace AppAPI.Controllers
             var productQuery = _context.Products
                 .Include(p => p.Seller)
                 .Where(p => p.SellerId == SellerId)
+                .Where(p => !_context.DeletedProducts
+                        .Any(dp => dp.ProductId == p.ProductId))
                 .AsQueryable();
 
             // Apply filtering and sorting using Sieve
@@ -218,8 +236,6 @@ namespace AppAPI.Controllers
                 }
             });
         }
-
-
 
         // GET: api/Product/{id}
         [HttpGet("GetProductById")]
@@ -324,30 +340,46 @@ namespace AppAPI.Controllers
         }
 
         // DELETE: api/Product/{id}
-        [HttpDelete("DeleteProduct")] //ok
-        [Authorize(Roles = "seller")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
-        {
-            var product = await _context.Products.FindAsync(id);
+        //[HttpDelete("DeleteProduct")] //ok
+        //public async Task<IActionResult> DeleteProduct(Guid id)
+        //{
+        //    var product = await _context.Products.FindAsync(id);
 
-            if (product == null)
-            {
-                return NotFound(new { message = "Product not found" });
-            }
+        //    if (product == null)
+        //    {
+        //        return NotFound(new { message = "Product not found" });
+        //    }
 
-            try
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+        //    try
+        //    {
+        //        _context.Products.Remove(product);
+        //        await _context.SaveChangesAsync();
 
-                return Ok(new { message = "Product deleted successfully" });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error occurred while deleting product: {ex.Message}");
-                return StatusCode(500, new { message = "Internal server error, unable to delete product" });
-            }
+        //        return Ok(new { message = "Product deleted successfully" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error occurred while deleting product: {ex.Message}");
+        //        return StatusCode(500, new { message = $"Internal server error, unable to delete product {ex}" });
+        //    }
+        //}
+
+    [HttpDelete("DeleteProduct")] //ok
+    public async Task<IActionResult> DeleteProduct(Guid id)
+    {
+
+        var deletedProduct = _context.DeletedProducts.Add( new DeletedProducts { Id = Guid.NewGuid(), ProductId = id });
+        try
+        {;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Product deleted successfully" });
         }
-
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error occurred while deleting product: {ex.Message}");
+            return StatusCode(500, new { message = $"Internal server error, unable to delete product {ex}" });
+        }
     }
+}
 }
