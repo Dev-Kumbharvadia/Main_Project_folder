@@ -7,7 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
     return null;
   }
-  const token = getCookie('jwtToken'); // Get jwtToken cookie value
+  const token = getCookie('jwtToken');
 
   const clonedReq = req.clone({
     setHeaders: {

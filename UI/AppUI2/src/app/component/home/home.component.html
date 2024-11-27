@@ -1,7 +1,7 @@
-<div class="relative overflow-x-auto m-4 sm:rounded-lg">
+<div class="relative overflow-x-auto m-4 sm:rounded-lg px-2">
   <!-- Search Container -->
   <div
-    class="flex items-center justify-center py-6 bg-white border-b border-[#393E46]"
+    class="flex flex-col sm:flex-row items-center justify-between py-6 bg-white border-b border-[#393E46] space-y-4 sm:space-y-0"
   >
     <!-- Search Wrapper -->
     <div class="flex items-center space-x-2">
@@ -25,10 +25,27 @@
         Search
       </button>
     </div>
+
+    <!-- Page Size Dropdown -->
+    <div class="flex items-center space-x-2">
+      <label for="page-size" class="text-sm text-[#222831]">Page Size:</label>
+      <select
+        id="page-size"
+        class="block w-14 py-2 pl-3 pr-6 text-sm text-[#222831] bg-[#EEEEEE] border border-[#393E46] rounded-lg focus:ring-[#00ADB5] focus:border-[#00ADB5]"
+        [(ngModel)]="pageSize"
+        (change)="onPageSizeChange($event)"
+      >
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+      </select>
+    </div>
   </div>
 </div>
 
-<div class="notice-container mx-auto">
+
+<div class="notice-container mx-auto px-10">
   @for (product of products; track $index){
 
   <div

@@ -23,11 +23,19 @@ export class HomeComponent implements OnInit {
   currentPage: number = 0;
   totalPages: number = 0;
   searchValue: string = '';
+  pageSize: number = 15;
 
   ngOnInit(): void {
     this.getSortedProducts();
     this.products = this.productService.productsList;
     this.cartService.cartItems = [];
+  }
+
+  onPageSizeChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.pageSize = +selectElement.value;
+    console.log('Page size changed to:', this.pageSize);
+    this.getSortedProducts();
   }
 
   nextPage() {
@@ -69,6 +77,7 @@ export class HomeComponent implements OnInit {
   }
 
   getSortedProducts(){
+    this.filter.PageSize = this.pageSize;
     this.productService.getSortedProducts(this.filter).subscribe((res: any)=>{
       this.products = res.data.result;
       this.currentPage = res.data.currentPage;
