@@ -17,7 +17,6 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAndUpdateCartData();
-    console.log(this.cartItems);
   }
 
   loadAndUpdateCartData() {
@@ -69,8 +68,6 @@ export class CartComponent implements OnInit {
       const cartQuantity = product.cartQuantity;
       const maxQuantity = product.stockQuantity;
   
-      console.log(product)
-
       if (maxQuantity <= 0) {
         alert('This product is out of stock.');
         return;

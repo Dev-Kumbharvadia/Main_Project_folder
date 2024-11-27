@@ -11,21 +11,25 @@ import { MiscService } from '../../services/misc.service';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
-
   authServices = inject(AuthService);
   router = inject(Router);
   loginData: ILoginModel = new LoginModel();
   miscServices = inject(MiscService);
 
-  onLogin(){
-    this.authServices.onLogin(this.loginData).subscribe((res: any)=>{
-      this.miscServices.setCookie('jwtToken',res.data.jwtToken,60)
-      this.miscServices.setCookie('refreshToken',res.data.refreshToken,7);
-      sessionStorage.setItem('userId',res.data.userId);
-      this.router.navigateByUrl('layout');
-    });
+  onLogin() {
+    this.authServices.onLogin(this.loginData).subscribe(
+      (res: any) => {
+        this.miscServices.setCookie('jwtToken', res.data.jwtToken, 60); // 60 minutes
+        this.miscServices.setCookie('refreshToken', res.data.refreshToken, 7); // 7 days
+        sessionStorage.setItem('userId', res.data.userId);
+        this.router.navigateByUrl('layout');
+      },
+      (err: any) => {
+        alert('Login Credentials Incorrect');
+      }
+    );
   }
 }

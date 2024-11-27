@@ -3,6 +3,7 @@ using AppAPI.Models.Domain;
 using AppAPI.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
@@ -123,7 +124,11 @@ namespace AppAPI.Controllers
             // Handle empty results
             if (products == null || !products.Any())
             {
-                return NotFound(new { message = "No Products found." });
+                return Ok(new ApiResponse<object>
+                {
+                    Message = "no product found",
+                    Success = true,
+                });
             }
 
             // Format the result

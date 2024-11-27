@@ -57,7 +57,6 @@ totalPages: any;
 
   deleteProduct(productId: string): void {
     if (confirm('Are you sure you want to delete this product?')) {
-      console.log(productId);
       this.productService.deleteProduct(productId).subscribe((res: any) => {
         alert(res.message);
         this.products = this.products.filter(

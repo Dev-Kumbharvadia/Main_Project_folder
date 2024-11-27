@@ -85,16 +85,21 @@ namespace AppAPI.Controllers
                         .Sum(th => (int?)th.Quantity) ?? 0, // Handle null values
 
                     // Get the list of items sold, with the quantity and money earned per item
-                    ItemsSold = user.Products
-                        .SelectMany(p => p.Transactions) // Flatten transactions for each product
-                        .GroupBy(th => new { th.ProductId, th.Product.ProductName, th.Product.Price })
+                    ItemsSold = _context.TransactionHistories
+                        .Where(th => th.SellerId == sellerId) // Filter by SellerId
+                        .GroupBy(th => new
+                        {
+                            th.ProductId,
+                            th.Product.ProductName,
+                            Price = th.TotalAmount / th.Quantity // Calculate price per unit
+                        })
                         .Select(group => new ItemSoldDTO
                         {
                             ProductId = group.Key.ProductId,
                             ProductName = group.Key.ProductName,
-                            Price = group.Key.Price, // Include the price of the product
-                            TotalQuantitySold = group.Sum(th => th.Quantity), // Total quantity sold for this product
-                            TotalAmountSold = group.Sum(th => th.Quantity * group.Key.Price) // Total amount sold for this product (quantity * price)
+                            Price = group.Key.Price, // Price per unit
+                            TotalQuantitySold = group.Sum(th => th.Quantity), // Total quantity sold
+                            TotalAmountSold = group.Sum(th => th.TotalAmount) // Total revenue
                         })
                         .ToList()
                 })

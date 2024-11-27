@@ -25,7 +25,6 @@ export class RetailerStatsComponent implements OnInit {
     this.miscServices.loadSalesData().subscribe((res: any) => {
       this.products = res.data.itemsSold;
       this.salesData = res;
-      console.log(this.salesData.data);
     });
   }
 

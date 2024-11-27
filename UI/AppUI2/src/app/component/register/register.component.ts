@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
 
   onRegister(): void {
     if (this.registerForm.invalid) {
-      console.log('Form is invalid');
+      alert('Form is invalid');
       return;
     }
     var userId: string;
@@ -46,11 +46,15 @@ export class RegisterComponent implements OnInit {
       )
       .subscribe((res: any) => {
         userId = res.data?.userId;
-        this.adminService
-          .assignRole(userId, this.registerForm.get('roleId')?.value)
-          .subscribe((roleRes: any) => {
-            console.log('Role assigned:', roleRes);
-          });
+        if(res.success == false){
+          alert(res.message)
+        } else {
+          this.adminService
+            .assignRole(userId, this.registerForm.get('roleId')?.value)
+            .subscribe((roleRes: any) => {
+              console.log('Role assigned:', roleRes);
+            });
+        }
       });
       this.router.navigateByUrl('login');
   }

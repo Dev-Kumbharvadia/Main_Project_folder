@@ -21,7 +21,6 @@ getAllUserInfo() {
   const currentUser = sessionStorage.getItem('userId'); // Retrieve current user ID
   this.adminServices.getAllUserInfo().subscribe((res: any) => {
     this.users = res.filter((user: any) => user.userId !== currentUser); // Exclude current user
-    console.log(this.users); // Log filtered user list
   });
 }
 

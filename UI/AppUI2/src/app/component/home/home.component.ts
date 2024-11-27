@@ -50,11 +50,15 @@ export class HomeComponent implements OnInit {
 
       searchProduct() {
         this.filter.Filters = this.searchValue;
-        console.log(this.searchValue)
         this.productService.getSortedProducts(this.filter).subscribe((res: any) => {
-          this.products = res.data.result;
-          this.currentPage = res.data.currentPage;
-          this.totalPages = res.data.totalPages;
+          if(res.data == null){
+            alert("no porduct found for search querry: " +this.searchValue);
+          }
+          else{
+            this.products = res.data.result;
+            this.currentPage = res.data.currentPage;
+            this.totalPages = res.data.totalPages;
+          }
         });
         }
 
@@ -66,7 +70,6 @@ export class HomeComponent implements OnInit {
 
   getSortedProducts(){
     this.productService.getSortedProducts(this.filter).subscribe((res: any)=>{
-      console.log(res.data.result);
       this.products = res.data.result;
       this.currentPage = res.data.currentPage;
       this.totalPages = res.data.totalPages;
@@ -93,11 +96,8 @@ export class HomeComponent implements OnInit {
       sellerName,
       stockQuantity
     };
-
-    // Pass the product to the service
     this.cartService.addToCart(product);
 
-    // console.log(product); // Debug: log the product object
   }
 
 

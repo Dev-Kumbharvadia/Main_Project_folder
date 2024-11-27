@@ -33,7 +33,7 @@ namespace TodoAPI.Controllers
         {
             if (_context.Users.Any(u => u.Username == model.Username))
             {
-                return BadRequest(new ApiResponse<User>
+                return Ok(new ApiResponse<User>
                 {
                     Message = "Username already exists",
                     Success = false,
@@ -42,7 +42,7 @@ namespace TodoAPI.Controllers
 
             if (_context.Users.Any(u => u.Email == model.Email))
             {
-                return BadRequest(new ApiResponse<User>
+                return Ok(new ApiResponse<User>
                 {
                     Message = "Email already exists",
                     Success = false,
