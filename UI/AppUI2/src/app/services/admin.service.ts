@@ -29,6 +29,10 @@ export class AdminService {
     return this.http.get<any>(environment.API_URl + Constant.API_METHOD.USER.GET_ALL_INFO)
   }
 
+  GetAllWhiteListedUserInfo(): Observable<any>{
+    return this.http.get<any>(environment.API_URl + Constant.API_METHOD.ADMIN.GET_WHITELISTED_USERS)
+  }
+
   getAllUserInfoById(Id: string): Observable<any>{
     return this.http.get<any>(environment.API_URl + Constant.API_METHOD.USER.GET_ALL_INFO_BY_ID + "?id=" + `${Id}`)
   }
@@ -38,6 +42,6 @@ export class AdminService {
   }
 
   banUser(Id: string): Observable<any>{
-    return this.http.delete<any>(environment.API_URl + Constant.API_METHOD.ADMIN.DELETE + "?Id=" + `${Id}`);
+    return this.http.post<any>(environment.API_URl + Constant.API_METHOD.ADMIN.BAN_USER + "?Id=" + `${Id}`,{});
   }
 }

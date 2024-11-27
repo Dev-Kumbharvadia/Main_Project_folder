@@ -68,11 +68,9 @@ export class UpdateProductComponent implements OnInit {
     formData.append('description', this.product.description || '');
 
     if (this.product.image) {
-      // If a new file is selected, append it directly
       formData.append('file', this.product.image, this.product.image.name);
       this.submitForm(formData);
     } else if (this.imageData) {
-      // Convert base64 data to a File and then submit
       this.base64ToFile(this.imageData, 'product-image.jpg')
         .then((file) => {
           formData.append('file', file);
@@ -101,7 +99,6 @@ export class UpdateProductComponent implements OnInit {
   }
 
   base64ToFile(base64: string, fileName: string): Promise<File> {
-    debugger;
     return fetch(base64)
       .then((res) => res.blob())
       .then((blob) => new File([blob], fileName, { type: blob.type }))

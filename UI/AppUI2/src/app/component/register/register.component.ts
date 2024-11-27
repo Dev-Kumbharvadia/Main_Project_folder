@@ -38,6 +38,12 @@ export class RegisterComponent implements OnInit {
       return;
     }
     var userId: string;
+
+    if(this.registerForm.get('password')?.value != this.registerForm.get('confirmPassword')?.value){
+      alert("password and confirm password dont match")
+      return;
+    }
+
     this.authService
       .onRegister(
         this.registerForm.get('username')?.value,

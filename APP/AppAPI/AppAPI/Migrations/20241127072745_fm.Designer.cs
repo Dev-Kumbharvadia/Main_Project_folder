@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241126110234_fm")]
+    [Migration("20241127072745_fm")]
     partial class fm
     {
         /// <inheritdoc />
@@ -24,6 +24,20 @@ namespace AppAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AppAPI.Models.Domain.BlacklistedUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlacklistedUsers");
+                });
 
             modelBuilder.Entity("AppAPI.Models.Domain.DeletedProducts", b =>
                 {

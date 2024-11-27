@@ -78,6 +78,21 @@ namespace TodoAPI.Controllers
             return Ok(user);
         }
 
+        [HttpPost("BlacklistUser")]
+        public async Task<ActionResult<User>> BlacklistUser(Guid id) // Confirm type matches UserId's type
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound($"User with ID {id} not found.");
+            }
+
+            _context.BlacklistedUsers.Add(new BlacklistedUsers { Id = Guid.NewGuid() , UserId = id});    
+
+            await _context.SaveChangesAsync();
+            return Ok(user);
+        }
+
         // GET: api/audits
         [HttpGet("GetAllAudits")] //ok
         public IActionResult GetUserAudits()
@@ -132,6 +147,31 @@ namespace TodoAPI.Controllers
                 Console.WriteLine($"Error occurred: {ex.Message}");
                 return StatusCode(500, "Internal server error.");
             }
+        }
+
+        [HttpGet("GetAllWhiteListedUserInfo")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetAllUsersInfo()
+        {
+            var users = await _context.Users
+                .Where(user => !_context.BlacklistedUsers.Any(blacklisted => blacklisted.UserId == user.UserId)) // Exclude blacklisted users
+                .Select(user => new UserInfoDto
+                {
+                    UserId = user.UserId,
+                    Username = user.Username,
+                    Email = user.Email,
+                    LastLoginTime = user.UserAudits
+                        .OrderByDescending(audit => audit.LoginTime)
+                        .Select(audit => audit.LoginTime)
+                        .FirstOrDefault(),
+                    LastLogoutTime = user.UserAudits
+                        .OrderByDescending(audit => audit.LoginTime)
+                        .Select(audit => audit.LogoutTime)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            return Ok(users);
         }
 
     }

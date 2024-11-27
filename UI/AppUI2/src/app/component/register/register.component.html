@@ -92,8 +92,10 @@
         required
         formControlName="roleId"
       >
-        <option value="" disabled selected hidden>Choose your role</option>
-        <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}</option>
+        @for (role of roles; track $index)
+        {
+        <option [value]="role.roleId">{{ role.roleName }}</option>
+        }
       </select>
       <label
         for="role"

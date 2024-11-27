@@ -5,6 +5,8 @@ export const Constant = {
             DELETE: '/api/Admin/DeleteUser',
             GET_ALL: '/api/Admin/GetAllAudits',
             GET_BY_ID: '/api/Admin/GetAuditsByUserID',
+            BAN_USER: '/api/Admin/BlacklistUser',
+            GET_WHITELISTED_USERS : '/api/Admin/GetAllWhiteListedUserInfo'
         },
         AUTH: {
             LOGOUT: '/api/Auth/Logout',

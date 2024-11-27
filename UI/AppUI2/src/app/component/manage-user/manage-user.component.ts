@@ -14,13 +14,20 @@ export class ManageUserComponent implements OnInit {
   adminServices = inject(AdminService)
 
 ngOnInit(): void {
-  this.getAllUserInfo();
+  this.getAllUGetAllWhiteListedUserInfoserInfo();
 }
 
 getAllUserInfo() {
   const currentUser = sessionStorage.getItem('userId'); // Retrieve current user ID
   this.adminServices.getAllUserInfo().subscribe((res: any) => {
     this.users = res.filter((user: any) => user.userId !== currentUser); // Exclude current user
+  });
+}
+
+getAllUGetAllWhiteListedUserInfoserInfo() {
+  const currentUser = sessionStorage.getItem('userId'); // Retrieve current user ID
+  this.adminServices.GetAllWhiteListedUserInfo().subscribe((res: any) => {
+    this.users = res.filter((user: any) => user.userId !== currentUser);
   });
 }
 

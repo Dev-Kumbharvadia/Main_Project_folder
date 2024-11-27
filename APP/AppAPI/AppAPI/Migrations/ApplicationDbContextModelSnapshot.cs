@@ -22,6 +22,20 @@ namespace AppAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AppAPI.Models.Domain.BlacklistedUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlacklistedUsers");
+                });
+
             modelBuilder.Entity("AppAPI.Models.Domain.DeletedProducts", b =>
                 {
                     b.Property<Guid>("Id")

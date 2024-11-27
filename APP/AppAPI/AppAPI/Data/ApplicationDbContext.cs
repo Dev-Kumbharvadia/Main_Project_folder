@@ -18,6 +18,7 @@ namespace AppAPI.Data
         public DbSet<UserAudit> UserAudits { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<DeletedProducts> DeletedProducts { get; set; }
+        public DbSet<BlacklistedUsers> BlacklistedUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

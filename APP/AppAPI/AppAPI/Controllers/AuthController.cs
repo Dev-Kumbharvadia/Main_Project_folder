@@ -132,7 +132,34 @@ namespace TodoAPI.Controllers
                 });
             }
 
-            var user = _context.Users.Include(u => u.RefreshTokens).FirstOrDefault(u => u.Username == model.Username);
+
+
+            var user = _context.Users
+                .Include(u => u.RefreshTokens)
+                .FirstOrDefault(u => u.Username == model.Username);
+
+            if (user == null)
+            {
+                return Ok(new ApiResponse<object>
+                {
+                    Message = "User not found",
+                    Success = false,
+                });
+            }
+
+            var userID = user.UserId;
+
+            // Check if the user is blacklisted
+            var isBlacklisted = _context.BlacklistedUsers.Any(bu => bu.UserId == userID);
+
+            if (isBlacklisted)
+            {
+                return Ok(new ApiResponse<object>
+                {
+                    Message = "You have been blacklisted",
+                    Success = false,
+                });
+            }
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
